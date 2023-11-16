@@ -5,8 +5,11 @@ import {
   createWebHashHistory,
   createWebHistory,
 } from 'vue-router';
+import { useDataStore } from 'src/stores/data-store';
 
 import routes from './routes';
+
+// const store = useDataStore();
 
 /*
  * If not building with SSR mode, you can
@@ -20,7 +23,9 @@ import routes from './routes';
 export default route((/* { store, ssrContext } */) => {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
-    : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
+    : process.env.VUE_ROUTER_MODE === 'history'
+      ? createWebHistory
+      : createWebHashHistory;
 
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
@@ -30,6 +35,17 @@ export default route((/* { store, ssrContext } */) => {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
+  });
+
+  Router.beforeEach((to, from, next) => {
+    if (to.name !== 'login' && !useDataStore().isLogged) {
+      return next({ name: 'login' });
+    }
+    // else {
+    //   next();
+    // }
+
+    return next();
   });
 
   return Router;

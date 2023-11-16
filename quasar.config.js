@@ -29,19 +29,15 @@ module.exports = configure((/* ctx */) => ({
   // app boot file (/src/boot)
   // --> boot files are part of "main.js"
   // https://v2.quasar.dev/quasar-cli-vite/boot-files
-  boot: [
-
-  ],
+  boot: [],
 
   // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
-  css: [
-    'app.scss',
-  ],
+  css: ['app.scss'],
 
   // https://github.com/quasarframework/quasar/tree/dev/extras
   extras: [
     // 'ionicons-v4',
-    // 'mdi-v5',
+    'mdi-v5',
     // 'fontawesome-v6',
     // 'eva-icons',
     // 'themify',
@@ -59,7 +55,7 @@ module.exports = configure((/* ctx */) => ({
       node: 'node16',
     },
 
-    vueRouterMode: 'hash', // available values: 'hash', 'history'
+    vueRouterMode: 'history', // available values: 'hash', 'history'
     // vueRouterBase,
     // vueDevtools,
     // vueOptionsAPI: false,
@@ -91,7 +87,21 @@ module.exports = configure((/* ctx */) => ({
 
   // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
   framework: {
-    config: {},
+    config: {
+      brand: {
+        primary: '#0c7c2c',
+        secondary: '#04447c',
+        accent: '#08803c',
+
+        dark: '#1d1d1d',
+        'dark-page': '#121212',
+
+        positive: '#21BA45',
+        negative: '#C10015',
+        info: '#fefedf',
+        warning: '#F2C037',
+      },
+    },
 
     // iconSet: 'material-icons', // Quasar icon set
     // lang: 'en-US', // Quasar language pack
@@ -104,7 +114,7 @@ module.exports = configure((/* ctx */) => ({
     // directives: [],
 
     // Quasar plugins
-    plugins: [],
+    plugins: ['Notify', 'Loading', 'Dialog'],
   },
 
   // animations: 'all', // --- includes all animations
@@ -179,13 +189,11 @@ module.exports = configure((/* ctx */) => ({
 
     packager: {
       // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
-
       // OS X / Mac App Store
       // appBundleId: '',
       // appCategoryType: '',
       // osxSign: '',
       // protocol: 'myapp://path',
-
       // Windows only
       // win32metadata: { ... }
     },
@@ -199,9 +207,7 @@ module.exports = configure((/* ctx */) => ({
 
   // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex
   bex: {
-    contentScripts: [
-      'my-content-script',
-    ],
+    contentScripts: ['my-content-script'],
 
     // extendBexScriptsConf (esbuildConf) {}
     // extendBexManifestJson (json) {}
