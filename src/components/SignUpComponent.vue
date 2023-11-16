@@ -96,12 +96,8 @@ const showPassword = ref<boolean>(false);
   <div class="q-pa-sm full-width flex justify-center">
     <!-- @reset="onReset"> -->
     <q-form @submit="signUp" class="q-gutter-xs row justify-center"
-            :style="$q.screen.gt.sm && 'max-width: 50%;'">
-      <!-- <h5 class="q-my-xs text-bold full-width
-                 text-center text-secondary">
-        <q-icon name="mdi-map-marker-path" size="xl" /> <br>
-        CADASTRO
-      </h5> -->
+            :style="$q.screen.gt.sm && 'max-width: 50%;'"
+    >
       <div class="q-pa-xl">
           <q-img
               src="/Logo-stagio.png"
@@ -122,9 +118,12 @@ const showPassword = ref<boolean>(false);
       <q-input v-model="email"
                filled class="col-10 col-xs-11"
                label-slot input-class="q-pl-xs " lazy-rules
-               :rules="[val => val && val.length > 0 || 'Por favor digite um email',
-                        val => (emailRegex.test(val))
-                        || 'Digite um email válido! ex: fulano.ciclano@gmail.com']">
+               :rules="[
+                 val => val && val.length > 0 || 'Por favor digite um email',
+                 val => (emailRegex.test(val))
+                 || 'Digite um email válido! ex: fulano.ciclano@gmail.com'
+                ]"
+      >
         <template v-slot:label>
           <span class="q-pl-xs">Seu email *</span>
         </template>
@@ -133,9 +132,11 @@ const showPassword = ref<boolean>(false);
       <q-input v-model="senha" filled
                :type="showPassword ? 'text' : 'password'"
                class="col-10 col-xs-11" label-slot
-        input-class="q-pl-xs " lazy-rules :rules="[
-          val => val !== null && val !== '' || 'Por favor digite uma senha'
-        ]" hide-bottom-space>
+               input-class="q-pl-xs " lazy-rules :rules="[
+               val => val !== null && val !== '' || 'Por favor digite uma senha'
+                ]"
+               hide-bottom-space
+      >
         <template v-slot:label>
           <span class="q-pl-xs">Sua senha *</span>
         </template>
@@ -147,7 +148,6 @@ const showPassword = ref<boolean>(false);
       </q-input>
 
       <div class="col-10 row col-xs-11 items-center q-py-sm" >
-        <!-- <q-toggle v-model="accept" label="Aceite os termos" /> -->
         <h6 class="no-margin" >Cargo:</h6>
         <q-option-group
           v-model="cargo"
@@ -156,19 +156,13 @@ const showPassword = ref<boolean>(false);
           inline
         />
       </div>
-      {{ cargo }}
+      <!-- {{ cargo }} -->
 
-      <q-btn label="Fazer o Cadastro"
-             class="col-10 col-xs-11 q-py-md q-mb-md"
-             type="submit" color="primary" no-caps />
-
-      <div class="full-width row justify-center">
-        <!-- <router-link to="/"
-                     class="text-bold text-secondary"
-                     @click="store.showLoginOrSignUp = false" >
-          Ir para login
-        </router-link> -->
-      </div>
+      <q-btn
+        label="Fazer o Cadastro"
+        class="col-10 col-xs-11 q-py-md q-mb-md"
+        type="submit" color="primary" no-caps
+      />
 
     </q-form>
 

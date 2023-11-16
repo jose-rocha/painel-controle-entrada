@@ -10,6 +10,10 @@ const getDataUserAuth = async () => {
   const usersColection = collection(db, 'Users');
   const queryUserAuth = query(usersColection, where('user_id', '==', store.idUser));
 
+  const getUsers = await getDocs(usersColection);
+
+  getUsers.docs.map((snapshot) => (snapshot.data()));
+
   const querySnapshot = await getDocs(queryUserAuth);
   const dataUserLoged = querySnapshot.docs.map((snapshot) => {
     const user = snapshot.data();
@@ -20,7 +24,7 @@ const getDataUserAuth = async () => {
     return user;
   });
 
-  return dataUserLoged;
+  return { dataUserLoged, getUsers };
 };
 
 export { getDataUserAuth };

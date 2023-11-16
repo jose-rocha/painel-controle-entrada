@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { useQuasar, format } from 'quasar';
-import { ref } from 'vue';
+// import { ref } from 'vue';
 
 import { useListImgagesStore } from 'src/stores/lista-imgs-store';
 import { getListImgStorage } from 'src/firebase/read/get_list_imgs';
-import { uploadImg } from '../firebase/create/upload_imgs';
+// import { uploadImg } from '../firebase/create/upload_imgs';
 
 import { deleteImgFirestore } from '../firebase/delete/delete_img';
 
 const $q = useQuasar();
-const { humanStorageSize } = format;
+// const { humanStorageSize } = format;
 
-const filesImgs = ref();
-const maxFileSize = ref('990048');
+// const filesImgs = ref();
+// const maxFileSize = ref('990048');
 const storeListImgs = useListImgagesStore();
 // const listImagesFirebase = ref([]);
 
@@ -21,40 +21,40 @@ const getListImgs = async () => {
 };
 getListImgs();
 
-const onRejected = () => {
-  $q.notify({
-    type: 'negative',
-    message: `O tamanho do arquivo excede o limite permitido que é
-    ${humanStorageSize(Number(maxFileSize.value))}`,
-    icon: 'mdi-file-image-remove-outline',
-    classes: 'text-bold',
-  });
-};
+// const onRejected = () => {
+//   $q.notify({
+//     type: 'negative',
+//     message: `O tamanho do arquivo excede o limite permitido que é
+//     ${humanStorageSize(Number(maxFileSize.value))}`,
+//     icon: 'mdi-file-image-remove-outline',
+//     classes: 'text-bold',
+//   });
+// };
 
-// Só é aceito arquivos do tipo png ou jpg
-const sendImg = async () => {
-  $q.loading.show();
+// // Só é aceito arquivos do tipo png ou jpg
+// const sendImg = async () => {
+//   $q.loading.show();
 
-  try {
-    await uploadImg(filesImgs.value, $q);
+//   try {
+//     await uploadImg(filesImgs.value, $q);
 
-    // storeListImgs.dadosImagens = await getListImgStorage();
-    await getListImgs();
+//     // storeListImgs.dadosImagens = await getListImgStorage();
+//     await getListImgs();
 
-    $q.loading.hide();
-  } catch (error: any) {  //eslint-disable-line
-    console.log(error); //eslint-disable-line
+//     $q.loading.hide();
+//   } catch (error: any) {  //eslint-disable-line
+//     console.log(error); //eslint-disable-line
 
-    $q.dialog({
-      title: 'Ops!',
-      message: 'Houve um erro inesperado, tente novamente',
-    });
+//     $q.dialog({
+//       title: 'Ops!',
+//       message: 'Houve um erro inesperado, tente novamente',
+//     });
 
-    $q.loading.hide();
-  } finally {
-    filesImgs.value = null;
-  }
-};
+//     $q.loading.hide();
+//   } finally {
+//     filesImgs.value = null;
+//   }
+// };
 
 const deletImg = (imagemIdDoc: string, pathImagem: string) => {
   $q.dialog({
@@ -88,54 +88,50 @@ const deletImg = (imagemIdDoc: string, pathImagem: string) => {
 
 <template>
   <q-page class="flex column items-center">
-    <div class="row justify-center q-pt-xl q-px-md q-mb-xl full-width">
+    <!-- <div class="row justify-center q-pt-xl q-px-md q-mb-xl full-width">
       <q-card flat bordered class="my-card col-12 col-lg-5 col-sm-7 col-xs-5" >
-      <q-card-section class="flex column justify-center items-center">
-        <q-icon name="mdi-image" size="100px"  />
-        <div class="text-h6">
-          Adicione sua imagem
-        </div>
-      </q-card-section>
 
-      <q-card-section class="q-pt-none flex column" style="gap: 10px;">
-        <q-file
-          class="full-width q-mb-xs"
-          v-model="filesImgs"
-          rounded
-          outlined
-          label="Imagens suportadas, png e jpeg"
-          accept=".jpg, .png, image/*"
-          :max-file-size="maxFileSize"
-          @rejected="onRejected"
-        >
-        <template v-if="filesImgs" v-slot:append>
-          <q-icon name="mdi-delete"
-                  @click.stop.prevent="filesImgs = null"
-                  class="cursor-pointer"
+        <q-card-section class="flex column justify-center items-center">
+          <q-icon name="mdi-image" size="100px"  />
+          <div class="text-h6">
+            Adicione sua imagem
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none flex column" style="gap: 10px;">
+          <q-file
+            class="full-width q-mb-xs"
+            v-model="filesImgs"
+            rounded
+            outlined
+            label="Imagens suportadas, png e jpeg"
+            accept=".jpg, .png, image/*"
+            :max-file-size="maxFileSize"
+            @rejected="onRejected"
+          >
+          <template v-if="filesImgs" v-slot:append>
+            <q-icon name="mdi-delete"
+                    @click.stop.prevent="filesImgs = null"
+                    class="cursor-pointer"
+            />
+          </template>
+          </q-file>
+
+          <q-btn
+            :label="filesImgs ? 'Enviar imagem' : 'Primeiro Selecione a imagem'"
+            no-caps
+            color="primary"
+            padding="sm"
+            rounded
+            @click="sendImg"
+            :disable="!filesImgs"
+            :icon-right=" !filesImgs ? 'mdi-image' : 'cloud_upload'"
           />
-        </template>
-        </q-file>
-
-        <q-btn
-          :label="filesImgs ? 'Enviar imagem' : 'Primeiro Selecione a imagem'"
-          no-caps
-          color="primary"
-          padding="sm"
-          rounded
-          @click="sendImg"
-          :disable="!filesImgs"
-          :icon-right=" !filesImgs ? 'mdi-image' : 'cloud_upload'"
-        />
-      </q-card-section>
-        <!-- <q-btn
-          label="Obter imagem"
-          color="primary"
-          @click="getImg"
-        /> -->
+        </q-card-section>
       </q-card>
-    </div>
+    </div> -->
 
-    <div class="flex items-center full-width q-px-md">
+    <div class="flex items-center q-mt-md full-width q-px-md">
       <q-card flat bordered class="my-card full-width " >
         <template v-if="!storeListImgs.dadosImagens.length">
           <q-card-section

@@ -29,7 +29,7 @@ const uploadImg = async (img: Blob, $q: any) => {
       contentType: 'image/png',
     };
 
-    const spaceRef = ref(storage, `lista_de_imagens/${img.name}`);
+    const spaceRef = ref(storage, `lista_de_imagens_vistantes/${img.name}`);
     const upload = await uploadBytes(spaceRef, img, metadata);
     const urlDownload = await getDownloadURL(spaceRef);
 
@@ -43,7 +43,7 @@ const uploadImg = async (img: Blob, $q: any) => {
       data_criacao: serverTimestamp(),
     };
 
-    await addDoc(collection(db, 'ListaDeImagens'), dataImageFirebase);
+    await addDoc(collection(db, 'ListaDeVisitantes'), dataImageFirebase);
 
     storeListImgs.dadosImagens.push(dataImageFirebase);
   } catch (error: any) {

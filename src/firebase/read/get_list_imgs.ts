@@ -3,7 +3,7 @@ import { useListImgagesStore } from 'src/stores/lista-imgs-store';
 import { db } from '../connect_db';
 
 const getListImgStorage = async () => {
-  const listImgs = await getDocs(collection(db, 'ListaDeImagens'));
+  const listImgs = await getDocs(collection(db, 'ListaDeVisitantes'));
 
   try {
     return listImgs.docs.map(

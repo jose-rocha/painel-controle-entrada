@@ -120,15 +120,16 @@ const showPassword = ref<boolean>(false);
 
       <q-btn
         label="Login" type="submit"
-        class="col-10 col-xs-11 q-py-md q-mb-md"
+        class="col-10 col-xs-11 q-py-md q-mb-md text-bold"
         color="secondary" no-caps
+        icon-right="mdi-login"
       />
 
-      <div class="full-width row justify-center">
+      <!-- <div class="full-width row justify-center">
         <router-link to="/" @click="store.showLoginOrSignUp = true" class="text-bold text-primary">
           Cadastre-se
         </router-link>
-      </div>
+      </div> -->
     </q-form>
 
   </div>

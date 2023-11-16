@@ -35,23 +35,23 @@ const essentialLinks: EssentialLinkProps[] = [
     link: '/cadastrar_usuario',
   },
   {
-    title: 'Lista de Séries',
-    caption: '',
-    icon: 'mdi-format-list-numbered',
-    link: '/lista_series',
-  },
-  {
     title: 'Gerenciar Conta',
     caption: '',
     icon: 'mdi-account-cog',
     link: '/gerenciar_conta',
   },
-  {
-    title: 'Cadastrar imagens',
-    caption: '',
-    icon: 'cloud_upload',
-    link: '/enviar_img',
-  },
+  //  {
+  //   title: 'Lista de Séries',
+  //   caption: '',
+  //   icon: 'mdi-format-list-numbered',
+  //   link: '/lista_series',
+  // },
+  // {
+  //   title: 'Cadastrar imagens',
+  //   caption: '',
+  //   icon: 'cloud_upload',
+  //   link: '/enviar_img',
+  // },
 
 ];
 
@@ -76,6 +76,7 @@ const logout = () => {
   storeListImgs.dadosImagens = [];
 };
 </script>
+
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated class="bg-secondary">
