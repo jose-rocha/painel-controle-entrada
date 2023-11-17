@@ -40,8 +40,7 @@ const loginFirebase = async (email: string, password: string, $q: $qObjetType) =
     });
 
     return { verifyJobUser, user };
-  } catch (error: any) {
-		// eslint-disable-line
+  } catch (error: any) {		// eslint-disable-line
     store.isLogged = false;
 
     throw new Error(error);
