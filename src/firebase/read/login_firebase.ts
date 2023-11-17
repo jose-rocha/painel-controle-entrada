@@ -1,22 +1,47 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  collection, getDocs, query, where,
+} from 'firebase/firestore/lite';
 import { useDataStore } from 'src/stores/data-store';
-import { auth } from '../connect_db';
+import { auth, db } from '../connect_db';
 
 const store = useDataStore();
 
-const loginFirebase = async (email: string, password: string) => {
+type $qObjetType = {
+  dialog: (data: object) => void;
+};
+
+const loginFirebase = async (email: string, password: string, $q: $qObjetType) => {
   try {
     const sign = await signInWithEmailAndPassword(auth, email, password);
-
     const { user } = sign;
 
-    if (user.accessToken) {
-      store.accessToken = user.accessToken;
-      store.isLogged = true;
-    }
+    const usersColection = collection(db, 'Users');
+    const userVerify = query(usersColection, where('email_usuario', '==', user.email));
+    const getUsers = await getDocs(userVerify);
 
-    return user;
+    const verifyJobUser = await getUsers.docs.filter(async (snapshot) => {
+      const cargo = await snapshot.data().cargo;
+
+      if (cargo === 'administrador') {
+        store.accessToken = user.accessToken;
+        store.isLogged = true;
+
+        return;
+      }
+
+      $q.dialog({
+        title: 'Ops!',
+        message: 'Esse usuário não tem permissão para fazer login!',
+        persistent: true,
+      }).onOk(() => {
+        store.idUser = '';
+      });
+    });
+
+    return { verifyJobUser, user };
   } catch (error: any) {
+		// eslint-disable-line
     store.isLogged = false;
 
     throw new Error(error);

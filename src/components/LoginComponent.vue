@@ -23,8 +23,8 @@ const login = async () => {
   $q.loading.show();
 
   try {
-    const dataLogin = await loginFirebase(email.value, senha.value);
-    store.idUser = dataLogin.uid;
+    const dataLogin = await loginFirebase(email.value, senha.value, $q);
+    store.idUser = dataLogin.user.uid;
 
     if (store.isLogged) {
       // await getDataUserAuth(store.nome, store.emailUser);
@@ -34,8 +34,6 @@ const login = async () => {
     }
   } catch (error: any) {
     // console.log(error);
-
-    $q.loading.hide();
 
     if (String(error).includes('auth/invalid-login-credentials')) {
       $q?.dialog({
@@ -58,6 +56,8 @@ const login = async () => {
     }
 
     //
+  } finally {
+    $q.loading.hide();
   }
 };
 
