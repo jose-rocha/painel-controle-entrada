@@ -2,7 +2,7 @@
 // import { reactive, computed, ref } from 'vue';
 
 import LoginComponent from 'src/components/LoginComponent.vue';
-import SignUpComponent from 'src/components/SignUpComponent.vue';
+import ResetPasswordComponent from 'src/components/ResetPasswordComponent.vue';
 import { useDataStore } from '../stores/data-store';
 
 const store = useDataStore();
@@ -12,8 +12,8 @@ const store = useDataStore();
 
 <template>
   <q-page class="flex row items-center justify-center">
-    <login-component v-if="!store.showLoginOrSignUp" />
+    <login-component v-if="!store.showLoginOrResetPass" />
 
-    <sign-up-component v-else />
+    <reset-password-component v-else />
   </q-page>
 </template>

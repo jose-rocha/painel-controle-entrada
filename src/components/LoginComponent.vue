@@ -125,11 +125,14 @@ const showPassword = ref<boolean>(false);
         icon-right="mdi-login"
       />
 
-      <!-- <div class="full-width row justify-center">
-        <router-link to="/" @click="store.showLoginOrSignUp = true" class="text-bold text-primary">
-          Cadastre-se
+      <div class="full-width row justify-center">
+        <router-link
+            to="/"
+            @click="store.showLoginOrResetPass = true" class="text-bold text-primary"
+        >
+          Esqueci Minha Senha
         </router-link>
-      </div> -->
+      </div>
     </q-form>
 
   </div>

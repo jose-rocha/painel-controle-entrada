@@ -83,8 +83,15 @@ const logout = () => {
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="q-gutter-x-md">
-          <b>Painel Administrativo - Stagio</b>
+        <q-toolbar-title class="q-gutter-x-md flex">
+          <b>Painel Administrativo </b>
+          <div class="bg-white q-px-xs">
+            <q-img
+              src="/Logo-stagio.png"
+              spinner-color="white"
+              style="width: 4rem;"
+            />
+          </div>
           <!-- <q-icon name="mdi-firebase" size="md" /> -->
         </q-toolbar-title>
 

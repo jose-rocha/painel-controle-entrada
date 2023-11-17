@@ -16,7 +16,7 @@ interface dataSerieStoreType {
 
 export interface dataStoreInterface {
   isLogged: boolean;
-  showLoginOrSignUp: boolean;
+  showLoginOrResetPass: boolean;
   accessToken: string;
   idUser: string;
   emailUser: string;
@@ -24,6 +24,6 @@ export interface dataStoreInterface {
   series: {
     doc: dataSerieStoreType;
     id_documento: string;
-  }[] ;
+  }[];
   dataEditSerieStore: dataEditSerieStoreType;
 }

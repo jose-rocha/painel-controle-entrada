@@ -228,9 +228,10 @@ const enableBtnRegister = computed(
 
         <template v-for="user in users" :key="user.id">
           <q-card-section class="flex " style="gap: 10px">
-            <span> <b>Email:</b> {{ user.email_usuario }}</span>
             <span><b>Nome:</b>  {{ user.nome }}</span>
-              <span><b>Cargo: </b>{{ user.cargo }}</span>
+            <span> <b>Email:</b> {{ user.email_usuario }}</span>
+            <span><b>Cargo: </b>{{ user.cargo }}</span>
+              <!-- <span><b>Data de cadastro: </b>{{ user.data_criacao }}</span> -->
           </q-card-section>
 
           <q-separator dark />

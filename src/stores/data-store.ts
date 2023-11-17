@@ -4,7 +4,7 @@ import { dataStoreInterface } from 'src/types/dataStore';
 export const useDataStore = defineStore('data', {
   state: () : dataStoreInterface => ({
     isLogged: false,
-    showLoginOrSignUp: false,
+    showLoginOrResetPass: false,
     accessToken: '',
     idUser: '',
     emailUser: '',

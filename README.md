@@ -1,6 +1,6 @@
 # Painel Controle Entrada (painel-controle-entrada)
 
-Um projeto do Colégio Stacio
+Um projeto do Colégio Stagio
 
 ## Install the dependencies
 ```bash

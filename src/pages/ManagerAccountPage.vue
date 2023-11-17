@@ -115,7 +115,6 @@ const rotateScreen = async () => {
   alturaTela.value = window.innerHeight;
   imgCamera.value.srcObject = videoStream.value;
 };
-
 </script>
 
 <template>
@@ -154,8 +153,10 @@ const rotateScreen = async () => {
             {{ store.nome }}
 
             <q-icon name="mdi-account-edit"
-                    size="lg" class="cursor-pointer" style="position: relative; bottom: 5px"
-              @click="openDialogUser">
+                    size="lg" class="cursor-pointer"
+                    style="position: relative; bottom: 5px"
+                    @click="openDialogUser"
+            >
               <q-tooltip>Editar Nome</q-tooltip>
             </q-icon>
           </q-item-label>
