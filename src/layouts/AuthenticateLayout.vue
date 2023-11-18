@@ -83,13 +83,13 @@ const logout = () => {
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="q-gutter-x-md flex">
-          <b>Painel Administrativo </b>
-          <div class="bg-white q-px-xs">
+        <q-toolbar-title class="q-gutter-x-md flex ">
+          <b v-if="$q.screen.gt.xs">Painel Administrativo </b>
+          <div class="bg-white q-pa-xs cursor-pointer" @click="() => router.push('/home')">
             <q-img
               src="/Logo-stagio.png"
               spinner-color="white"
-              style="width: 4rem;"
+              style="width: 8rem;"
             />
           </div>
           <!-- <q-icon name="mdi-firebase" size="md" /> -->
@@ -103,7 +103,7 @@ const logout = () => {
 
         <q-btn dense flat icon="mdi-logout" @click="logout">
           <q-tooltip
-              anchor="bottom middle" class="bg-positive"
+              anchor="bottom middle" class="bg-primary"
               self="top middle" :offset="[10, 10]"
           >
             <strong>Sair</strong> do <em>sistema</em>
@@ -113,14 +113,18 @@ const logout = () => {
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" bordered>
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <!-- show-if-above -->
       <q-list>
         <q-item-label header>
           Páginas
         </q-item-label>
 
-        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
+        <EssentialLink
+            v-for="link in essentialLinks"
+            :key="link.title" v-bind="link"
+            :Links="essentialLinks"
+        />
       </q-list>
     </q-drawer>
 

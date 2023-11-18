@@ -220,14 +220,14 @@ const enableBtnRegister = computed(
     </div>
 
     <div class="full-width justify-center flex row q-mt-md">
-      <q-card class=" my-card  text-white" style="width: 80rem;">
+      <q-card class="my-card" style="width: 80rem;">
         <q-card-section class="flex column justify-center">
-          <div class="text-h6 text-center text-bold">Usuários Cadastrados</div>
+          <div class="text-h6 text-center text-bold text-primary">Usuários Cadastrados</div>
           <!-- <div class="text-subtitle2 text-center">by John Doe</div> -->
         </q-card-section>
 
         <template v-for="user in users" :key="user.id">
-          <q-card-section class="flex " style="gap: 10px">
+          <q-card-section class="flex text-secondary" style="gap: 10px">
             <span><b>Nome:</b>  {{ user.nome }}</span>
             <span> <b>Email:</b> {{ user.email_usuario }}</span>
             <span><b>Cargo: </b>{{ user.cargo }}</span>

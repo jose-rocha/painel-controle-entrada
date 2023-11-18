@@ -24,6 +24,7 @@ const openDialogUser = async () => {
 
 const updateName = async () => {
   await updateUserNameFirebase(nomeUserEdit.value);
+  dialog.value = false;
 };
 
 const videoStream = ref();
@@ -175,7 +176,8 @@ const rotateScreen = async () => {
               <!-- <q-avatar icon="signal_wifi_off" color="primary" text-color="white" /> -->
               <q-input v-model="nomeUserEdit"
                        autofocus label="Editando Nome do Usuário"
-                       class="q-pl-sm">
+                       class="q-pl-sm"
+                       @keypress.enter="updateName">
                 <template v-slot:append>
                   <q-icon name="mdi-map-clock-outline" color="primary" />
                 </template>
