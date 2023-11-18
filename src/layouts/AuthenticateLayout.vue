@@ -83,7 +83,7 @@ const logout = () => {
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="q-gutter-x-md flex ">
+        <q-toolbar-title class="q-gutter-x-md flex items-center">
           <b v-if="$q.screen.gt.xs">Painel Administrativo </b>
           <div class="bg-white q-pa-xs cursor-pointer" @click="() => router.push('/home')">
             <q-img
