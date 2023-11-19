@@ -203,7 +203,7 @@ const enableBtnRegister = computed(
         </q-input>
 
         <div class="col-10 row col-xs-11 items-center q-py-sm">
-          <h6 class="no-margin">Cargo:</h6>
+          <h6 class="no-margin text-secondary">Cargo:</h6>
           <q-option-group v-model="cargo" :options="opcoes" color="primary" inline />
         </div>
 

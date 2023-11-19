@@ -85,13 +85,13 @@ const logout = () => {
 
         <q-toolbar-title class="q-gutter-x-md flex items-center">
           <b v-if="$q.screen.gt.xs">Painel Administrativo </b>
-          <div class="bg-white q-pa-xs cursor-pointer" @click="() => router.push('/home')">
+          <!-- <div class="bg-white q-pa-xs cursor-pointer" @click="() => router.push('/home')">
             <q-img
               src="/Logo-stagio.png"
               spinner-color="white"
               style="width: 8rem;"
             />
-          </div>
+          </div> -->
           <!-- <q-icon name="mdi-firebase" size="md" /> -->
         </q-toolbar-title>
 
@@ -117,7 +117,12 @@ const logout = () => {
       <!-- show-if-above -->
       <q-list>
         <q-item-label header>
-          Páginas
+          <!-- Páginas -->
+          <q-img
+              src="/Logo-stagio.png"
+              spinner-color="white"
+              style="width: 8rem;"
+            />
         </q-item-label>
 
         <EssentialLink

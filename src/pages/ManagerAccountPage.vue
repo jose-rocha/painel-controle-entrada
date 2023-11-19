@@ -126,7 +126,8 @@ const rotateScreen = async () => {
       <q-item class="flex column items-center justify-center" style="gap: 2rem;">
         <q-item-section avatar>
           <q-avatar class="cursor-pointer " style="height: 7rem; width: 7rem;">
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+            <!-- <img src="https://cdn.quasar.dev/img/boy-avatar.png"> -->
+            <q-icon name="mdi-account" size="140px" color="secondary" />
           </q-avatar>
 
           <div class="bg-transparent flex justify-center
@@ -155,6 +156,7 @@ const rotateScreen = async () => {
 
             <q-icon name="mdi-account-edit"
                     size="lg" class="cursor-pointer"
+                    color="secondary"
                     style="position: relative; bottom: 5px"
                     @click="openDialogUser"
             >
