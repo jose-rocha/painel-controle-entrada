@@ -1,9 +1,12 @@
-import { collection, getDocs } from 'firebase/firestore/lite';
-import { useListImgagesStore } from 'src/stores/lista-imgs-store';
+import {
+  collection, getDocs, query, orderBy,
+} from 'firebase/firestore/lite';
 import { db } from '../connect_db';
 
 const getListImgStorage = async () => {
-  const listImgs = await getDocs(collection(db, 'ListaDeVisitantes'));
+  const docsRef = collection(db, 'ListaDeVisitantes');
+  const docOrderBy = query(docsRef, orderBy('data_criacao', 'desc'));
+  const listImgs = await getDocs(docOrderBy);
 
   try {
     return listImgs.docs.map(

@@ -7,13 +7,3 @@ export const useListImgagesStore = defineStore('listImages', {
   }),
   persist: true,
 });
-
-// {
-//   data_criação: { seconds: '', nanoseconds: '' },
-//   email_usuario_responsavel: '',
-//   id_usuario: '',
-//   nome_imagem: '',
-//   nome_usuario_responsavel: '',
-//   path_imagem: '',
-//   url_download: '',
-// },

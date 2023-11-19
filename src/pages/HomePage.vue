@@ -1,60 +1,18 @@
 <script setup lang="ts">
-import { useQuasar, format } from 'quasar';
-// import { ref } from 'vue';
-
+// import { useQuasar, format } from 'quasar';
+import { useQuasar } from 'quasar';
 import { useListImgagesStore } from 'src/stores/lista-imgs-store';
 import { getListImgStorage } from 'src/firebase/read/get_list_imgs';
-// import { uploadImg } from '../firebase/create/upload_imgs';
-
 import { deleteImgFirestore } from '../firebase/delete/delete_img';
 
 const $q = useQuasar();
-// const { humanStorageSize } = format;
-
-// const filesImgs = ref();
-// const maxFileSize = ref('990048');
 const storeListImgs = useListImgagesStore();
-// const listImagesFirebase = ref([]);
+// const { humanStorageSize } = format;
 
 const getListImgs = async () => {
   storeListImgs.dadosImagens = await getListImgStorage();
 };
 getListImgs();
-
-// const onRejected = () => {
-//   $q.notify({
-//     type: 'negative',
-//     message: `O tamanho do arquivo excede o limite permitido que é
-//     ${humanStorageSize(Number(maxFileSize.value))}`,
-//     icon: 'mdi-file-image-remove-outline',
-//     classes: 'text-bold',
-//   });
-// };
-
-// // Só é aceito arquivos do tipo png ou jpg
-// const sendImg = async () => {
-//   $q.loading.show();
-
-//   try {
-//     await uploadImg(filesImgs.value, $q);
-
-//     // storeListImgs.dadosImagens = await getListImgStorage();
-//     await getListImgs();
-
-//     $q.loading.hide();
-//   } catch (error: any) {  //eslint-disable-line
-//     console.log(error); //eslint-disable-line
-
-//     $q.dialog({
-//       title: 'Ops!',
-//       message: 'Houve um erro inesperado, tente novamente',
-//     });
-
-//     $q.loading.hide();
-//   } finally {
-//     filesImgs.value = null;
-//   }
-// };
 
 const deletImg = (imagemIdDoc: string, pathImagem: string) => {
   $q.dialog({
@@ -62,86 +20,43 @@ const deletImg = (imagemIdDoc: string, pathImagem: string) => {
     message: 'Tem certeza que quer apagar essa imagem?',
     cancel: 'Cancelar',
   }).onOk(async () => {
-    // storeListImgs.dadosImagens.filter((item, i) => {
-    //   if (i === indexParams) {
-    //     console.log('é igual');
-    //     storeListImgs.dadosImagens.splice(i, 1);
-    //   }
-    //   return item;
-    // });
-
     await deleteImgFirestore(imagemIdDoc, pathImagem);
 
-    // storeListImgs.dadosImagens = await getListImgStorage();
     await getListImgs();
   });
 };
 
-// (async () => {
-//   const data = await getImgStorage();
+const dataCadastroFormatada = (dataImg: object) => {
+  const data = {
+    nanoseconds: dataImg.doc?.data_criacao?.nanoseconds,
+    seconds: dataImg.doc?.data_criacao?.seconds,
+  };
 
-//   data.map(async (img) => listImagesFirebase.value.push(await img));
-// })();
+  const date = new Date(data.seconds * 1000 + data.nanoseconds / 1000000);
+  const dia = date.getDate().toString().padStart(2, '0');
+  const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+  const ano = date.getFullYear();
+  const horas = String(date.getHours()).padStart(2, '0');
+  const minutos = String(date.getMinutes()).padStart(2, '0');
+  const dataFormatada = `${dia}/${mes}/${ano} ${horas}:${minutos}`;
 
-// const getImg = async () => getImgStorage();
+  return dataFormatada;
+};
 </script>
 
 <template>
   <q-page class="flex column items-center">
-    <!-- <div class="row justify-center q-pt-xl q-px-md q-mb-xl full-width">
-      <q-card flat bordered class="my-card col-12 col-lg-5 col-sm-7 col-xs-5" >
-
-        <q-card-section class="flex column justify-center items-center">
-          <q-icon name="mdi-image" size="100px"  />
-          <div class="text-h6">
-            Adicione sua imagem
-          </div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none flex column" style="gap: 10px;">
-          <q-file
-            class="full-width q-mb-xs"
-            v-model="filesImgs"
-            rounded
-            outlined
-            label="Imagens suportadas, png e jpeg"
-            accept=".jpg, .png, image/*"
-            :max-file-size="maxFileSize"
-            @rejected="onRejected"
-          >
-          <template v-if="filesImgs" v-slot:append>
-            <q-icon name="mdi-delete"
-                    @click.stop.prevent="filesImgs = null"
-                    class="cursor-pointer"
-            />
-          </template>
-          </q-file>
-
-          <q-btn
-            :label="filesImgs ? 'Enviar imagem' : 'Primeiro Selecione a imagem'"
-            no-caps
-            color="primary"
-            padding="sm"
-            rounded
-            @click="sendImg"
-            :disable="!filesImgs"
-            :icon-right=" !filesImgs ? 'mdi-image' : 'cloud_upload'"
-          />
-        </q-card-section>
-      </q-card>
-    </div> -->
-
     <div class="flex items-center q-mt-md full-width q-px-md">
       <q-card flat bordered class="my-card full-width " >
         <template v-if="!storeListImgs.dadosImagens.length">
           <q-card-section
             class="justify-center text-center
-                    text-bold text-h5
-                  "
-                  style="padding-block: 6.09rem ;"
+                   text-bold text-h5"
+            style="padding-block: 6.09rem ;"
           >
-              <q-icon name="mdi-alert-circle-outline"
-                      size="md"
+              <q-icon
+                name="mdi-alert-circle-outline"
+                size="md"
               />
               Nenhum Visitante Cadastrado!
           </q-card-section>
@@ -149,27 +64,57 @@ const deletImg = (imagemIdDoc: string, pathImagem: string) => {
 
         <template v-else>
           <q-card-section
-            :class="('flex')+' '
+            class="flex justify-center  text-center
+                   text-bold text-h5 full-width no-margin"
+          >
+            <span
+              class="text-secondary q-mr-md"
+              style="font-size: 2rem;"
+              >
+              Visitantes Cadastrados!
+            </span>
+            <q-icon name="mdi-account-card"
+                    size="md" color="secondary"
+            />
+            <div class="full-width">
+              <span>Quantidade de Visitantes: </span>
+              {{ storeListImgs.dadosImagens.length }}
+            </div>
+          </q-card-section>
+
+          <q-card-section
+            :class="('flex')+ ' '
             +(storeListImgs.dadosImagens.length >= 4 && 'justify-center')"
             style="gap: 20px;"
           >
-            <q-img
-              v-for="(imagem) in storeListImgs.dadosImagens"
-              :key="imagem?.id_doc"
-              :src="imagem.doc?.url_download"
-              style="width: 300px; height: 200px; "
-              fit="contain"
-            >
+            <template v-for="dadosImagem in storeListImgs.dadosImagens" :key="dadosImagem">
+              <div class="flex column">
+                <div class="flex column justify-center items-center">
+                <span class="text-bold text-secondary">Responsável Portaria:</span>
+                {{ dadosImagem.doc.nome_responsavel_portaria}}
+                </div>
 
+                <div class="flex column justify-center items-center">
+                <span class="text-bold text-secondary">Data e hora da visita:</span>
+                {{dataCadastroFormatada(dadosImagem)}}
+                </div>
+
+                <q-img
+                  :src="dadosImagem.doc.url_download"
+                  style="width: 300px; height: 200px; "
+                  fit="contain"
+              >
               <div class="absolute-bottom text-subtitle1 text-center">
-                <q-icon name="mdi-delete"
-                        @click="deletImg( imagem.id_doc, imagem.doc.path_imagem)"
-                        class="cursor-pointer absolute-top-right q-mt-xs"
-                        size="sm"
-                />
-                <!-- {{ imagem }} -->
+                  <q-icon name="mdi-delete"
+                          @click="deletImg( dadosImagem.id_doc, dadosImagem.doc.url_download)"
+                          class="cursor-pointer absolute-top-right q-mt-xs"
+                          size="sm"
+                  />
+                </div>
+              </q-img>
+
               </div>
-            </q-img>
+            </template>
           </q-card-section>
         </template>
       </q-card>

@@ -84,7 +84,7 @@ const logout = () => {
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title class="q-gutter-x-md flex items-center">
-          <b v-if="$q.screen.gt.xs">Painel Administrativo </b>
+          <b >Painel Administrativo </b>
           <!-- <div class="bg-white q-pa-xs cursor-pointer" @click="() => router.push('/home')">
             <q-img
               src="/Logo-stagio.png"
@@ -94,12 +94,6 @@ const logout = () => {
           </div> -->
           <!-- <q-icon name="mdi-firebase" size="md" /> -->
         </q-toolbar-title>
-
-        <div>
-          <q-toggle v-model="storeTheme.theme" :icon="storeTheme.theme
-            ? 'mdi-moon-waxing-crescent'
-            : 'mdi-white-balance-sunny'" color="dark" />
-        </div>
 
         <q-btn dense flat icon="mdi-logout" @click="logout">
           <q-tooltip
@@ -114,7 +108,6 @@ const logout = () => {
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <!-- show-if-above -->
       <q-list>
         <q-item-label header>
           <!-- Páginas -->
@@ -131,6 +124,17 @@ const logout = () => {
             :Links="essentialLinks"
         />
       </q-list>
+
+      <div style="position: absolute; bottom: 0; left: 1rem;">
+        <span>
+          Mudar o Tema para
+          <b>{{ storeTheme.theme ? 'Claro' : 'Escuro' }}</b>
+        </span>
+
+        <q-toggle v-model="storeTheme.theme" :icon="storeTheme.theme
+          ? 'mdi-moon-waxing-crescent'
+          : 'mdi-white-balance-sunny'" color="secondary" />
+      </div>
     </q-drawer>
 
     <q-page-container>

@@ -1,4 +1,4 @@
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../connect_db';
 
 export const resetPasswordFirebase = async (email: string) => {

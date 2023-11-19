@@ -116,6 +116,7 @@ const rotateScreen = async () => {
   alturaTela.value = window.innerHeight;
   imgCamera.value.srcObject = videoStream.value;
 };
+
 </script>
 
 <template>

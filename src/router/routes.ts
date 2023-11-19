@@ -18,19 +18,9 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/RegisterUserPage.vue'),
       },
       {
-        name: 'lista_series',
-        path: '/lista_series',
-        component: () => import('pages/SeriesPage.vue'),
-      },
-      {
         name: 'gerenciar_conta',
         path: '/gerenciar_conta',
         component: () => import('pages/ManagerAccountPage.vue'),
-      },
-      {
-        name: 'upload_img',
-        path: '/enviar_img',
-        component: () => import('pages/UploadImages.vue'),
       },
     ],
   },

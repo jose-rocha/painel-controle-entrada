@@ -1,11 +1,8 @@
 import {
   collection, getDocs, doc, deleteDoc,
 } from 'firebase/firestore/lite';
-// import { useListImgagesStore } from 'src/stores/lista-imgs-store';
 import { deleteObject, ref } from 'firebase/storage';
 import { db, storage } from '../connect_db';
-
-// const storeListImgs = useListImgagesStore();
 
 const deleImgStorage = async (pathImg: string) => {
   try {
@@ -20,7 +17,7 @@ const deleImgStorage = async (pathImg: string) => {
 const deleteImgFirestore = async (idImg: string, pathImagem: string) => {
   try {
     // deletando da collection ListaDeImagens
-    await deleteDoc(doc(db, 'ListaDeImagens', idImg));
+    await deleteDoc(doc(db, 'ListaDeVisitantes', idImg));
 
     await deleImgStorage(pathImagem);
   } catch (erro: any) { // eslint-disable-line
