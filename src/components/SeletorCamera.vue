@@ -2,6 +2,8 @@
 import { useQuasar } from 'quasar';
 import { ref, computed } from 'vue';
 
+import { updateAvatarFirebase } from '../firebase/update/update_avatar';
+
 const $q = useQuasar();
 const maximizedToggle = ref(true);
 const canvas = ref(null);
@@ -15,6 +17,7 @@ const modalCanvas = ref(false);
 const props = defineProps({
   showModalCamera: Boolean,
   imgCamera: Object,
+  idUser: String,
 });
 const emits = defineEmits(['update:showModalCamera', 'isFrontOrBack', 'rotateScreen', 'enviarImgBase64']);
 
@@ -117,6 +120,8 @@ const enviarImagem = async () => {
 
   dialog.value = false;
   modalCanvas.value = false;
+
+  await updateAvatarFirebase(blobImage, props.idUser, $q);
 
   return blobImage;
 };

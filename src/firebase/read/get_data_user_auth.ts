@@ -20,6 +20,11 @@ const getDataUserAuth = async () => {
 
     store.nome = user.nome;
     store.emailUser = user.email_usuario;
+    store.avatarUrl = user.avatar;
+
+    // console.log(user);
+
+    store.pathStorageImage = user.path_avatar_storage;
 
     return user;
   });

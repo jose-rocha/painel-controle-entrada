@@ -9,6 +9,8 @@ export const useDataStore = defineStore('data', {
     idUser: '',
     emailUser: '',
     nome: '',
+    avatarUrl: '',
+    pathStorageImage: '',
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2,

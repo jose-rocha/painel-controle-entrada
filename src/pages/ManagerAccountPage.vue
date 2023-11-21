@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { getDataUserAuth } from 'src/firebase/read/get_data_user_auth';
 import { updateUserNameFirebase } from 'src/firebase/update/update_user_name';
+import { deleteAvatarFirebase } from 'src/firebase/delete/delete_avatar';
 
 import { useQuasar } from 'quasar';
 import { useDataStore } from '../stores/data-store';
@@ -51,7 +52,7 @@ const constraints = {
   },
 };
 
-const aoClicarCamera = async () => {
+const openCamera = async () => {
   if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
     // console.log('ok, o navegador tem suporte a API de câmera'); // eslint-disable-line
     $q.loading.show({
@@ -117,18 +118,42 @@ const rotateScreen = async () => {
   imgCamera.value.srcObject = videoStream.value;
 };
 
+const deleteAvatar = () => {
+  $q.dialog({
+    title: 'Ops!',
+    message: 'Você tem certeza que excluir a forto do seu perfil?',
+    cancel: 'Cancelar',
+  }).onOk(async () => {
+    try {
+      await deleteAvatarFirebase(store.avatarUrl, store.pathStorageImage, store.idUser);
+    } catch (error) {
+      $q.dialog({
+        title: 'Ops!',
+        message: `${error}`,
+      });
+    }
+    // store.avatarUrl = null;
+  });
+};
 </script>
 
 <template>
   <q-page class="flex row items-center justify-center">
     <q-card class="my-card" flat bordered :style="$q.screen.lt.sm ?
       'max-width: 80vw;' :
-      'max-width: 50vw;'">
-      <q-item class="flex column items-center justify-center" style="gap: 2rem;">
+      'width: 50vw; max-width: 40vw;'"
+    >
+      <q-item
+        class="flex column items-center justify-center q-pa-xl"
+        style="gap: 2rem; "
+      >
         <q-item-section avatar>
           <q-avatar class="cursor-pointer " style="height: 7rem; width: 7rem;">
-            <!-- <img src="https://cdn.quasar.dev/img/boy-avatar.png"> -->
-            <q-icon name="mdi-account" size="140px" color="secondary" />
+            <template v-if="store.avatarUrl" >
+              <img :src="store.avatarUrl">
+            </template>
+
+            <q-icon v-else name="mdi-account" size="140px" color="secondary" />
           </q-avatar>
 
           <div class="bg-transparent flex justify-center
@@ -143,7 +168,7 @@ const rotateScreen = async () => {
                style="border-bottom-left-radius: 95px;
                       border-bottom-right-radius: 95px;
                      "
-              @click="aoClicarCamera"
+              @click="openCamera"
           >
             <q-icon name="mdi-camera" size="md" class="q-mb-xs" />
             <q-tooltip>Editar Foto</q-tooltip>
@@ -167,6 +192,20 @@ const rotateScreen = async () => {
           <q-item-label caption>
             {{ store.emailUser }}
           </q-item-label>
+
+          <template v-if="store.avatarUrl">
+            <q-chip
+              outline color="primary"
+              text-color="white"
+              icon-right="mdi-trash-can"
+              class="q-mt-md"
+              clickable
+            @click="deleteAvatar"
+            >
+              Excluir a foto
+            </q-chip>
+          </template>
+
         </q-item-section>
       </q-item>
     </q-card>
@@ -206,6 +245,7 @@ const rotateScreen = async () => {
 
     <template v-if="showModalCamera">
       <seletor-camera :showModalCamera="showModalCamera"
+                      :idUser="store.idUser"
                       @update:show-modal-camera="disableCamera"
                       :imgCamera="imgCamera"
                       @is-front-or-back="mudaCamera"

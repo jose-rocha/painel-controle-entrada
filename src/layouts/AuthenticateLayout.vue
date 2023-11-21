@@ -71,6 +71,8 @@ const logout = () => {
   store.idUser = '';
   store.nome = '';
   store.emailUser = '';
+  store.avatarUrl = '';
+  store.pathStorageImage = '';
 
   store.series = [];
   storeListImgs.dadosImagens = [];
