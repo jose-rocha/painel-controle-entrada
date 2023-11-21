@@ -56,7 +56,7 @@ const openCamera = async () => {
   if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
     // console.log('ok, o navegador tem suporte a API de câmera'); // eslint-disable-line
     $q.loading.show({
-      message: 'Carregando a câmera',
+      message: 'Carregando a câmera...',
     });
 
     try {
@@ -121,7 +121,7 @@ const rotateScreen = async () => {
 const deleteAvatar = () => {
   $q.dialog({
     title: 'Ops!',
-    message: 'Você tem certeza que excluir a forto do seu perfil?',
+    message: 'Você tem certeza que quer excluir a foto do perfil?',
     cancel: 'Cancelar',
   }).onOk(async () => {
     try {
@@ -139,9 +139,11 @@ const deleteAvatar = () => {
 
 <template>
   <q-page class="flex row items-center justify-center">
-    <q-card class="my-card" flat bordered :style="$q.screen.lt.sm ?
-      'max-width: 80vw;' :
-      'width: 50vw; max-width: 40vw;'"
+    <q-card
+      class="my-card" flat bordered
+      :style="$q.screen.lt.sm ?
+        'max-width: 80vw;' :
+        'width: 50vw; max-width: 50vw;'"
     >
       <q-item
         class="flex column items-center justify-center q-pa-xl"

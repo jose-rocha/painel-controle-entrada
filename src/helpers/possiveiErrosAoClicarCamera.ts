@@ -7,17 +7,17 @@ export const errosFNHelper = (err: any, $q: any) => {
     });
   } else if (err.message === 'Permission denied') {
     $q.dialog({
-      title: 'Opsss!',
+      title: 'Ops!',
       message: 'Você não permitiu o acesso a câmera.',
     });
   } else if (err.message === 'Could not start video source') {
     $q.dialog({
-      title: 'Opsss!',
+      title: 'Ops!',
       message: 'Não foi possível iniciar a fonte de vídeo, tente novamente.',
     });
   } else {
     $q.dialog({
-      title: 'Opsss!',
+      title: 'Ops!',
       message: err.message,
     });
   }

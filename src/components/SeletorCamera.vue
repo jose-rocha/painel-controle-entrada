@@ -166,8 +166,12 @@ window.addEventListener('popstate', () => {
           </q-bar>
 
           <q-btn size="35px" flat icon="mdi-circle-slice-8"
-                  style="position: absolute; bottom: 2rem;z-index: 2;"
-                  :style="showMudarCamera ? 'left: 40%;' : 'left: 50%;'"
+                  :style="(showMudarCamera ? 'left: 40%;' : 'left: 50%;')+ ' '
+                          +($q.platform.is.ios || $q.platform.is.android
+                            ? 'position: absolute; bottom: 0rem; z-index: 2; left: 40%;'
+                            : 'position: absolute; bottom: 2rem;z-index: 2;'
+                            )
+                          "
                   @click="tirarFoto"
           >
                   <!-- {{ width !== '' }} -->
@@ -208,7 +212,10 @@ window.addEventListener('popstate', () => {
 
       <template v-if="modalCanvas">
         <q-dialog v-model="modalCanvas" class="bg-black " persistent>
-          <q-card class="no-padding" style="overflow: hidden; position: relative; bottom: 1.4rem;">
+          <q-card class="no-padding"
+                  style="overflow: hidden; position: relative; bottom: 1.4rem;"
+          >
+          <!-- $q.platform.is.ios || $q.platform.is.android -->
             <q-btn dense icon="mdi-delete" color="primary" round
                   style="position: fixed; z-index: 2; left: 5px; top: 5px;"
                   @click="deleteImg" size="13px"/>
@@ -216,10 +223,14 @@ window.addEventListener('popstate', () => {
               <canvas ref="canvas" :width="larguraTela" :height="alturaTela"
                       style="object-fit: fill; position: fixed; left: 0; top: 0;">
               </canvas>
-              <q-card-actions class="flex full-width"
-                              style="position: fixed;
-                                    bottom:0; z-index: 2;
-                                    gap: 5px; left: 92%; z-index: 5;
+              <q-card-actions class="flex full-width "
+                              :style="$q.platform.is.ios || $q.platform.is.android
+                                      ? `position: fixed; bottom: 0.5rem; z-index: 2;
+                                          gap: 5px; left: 85%; z - index: 5;
+                                        `
+                                      : `position: fixed; bottom: 0.5rem; z-index: 2;
+                                         gap: 5px; left: 95%; z-index: 5;
+                                        `
                                     "
               >
                 <!-- <q-input outlined v-model="legendaFoto" class="full-width"
@@ -230,8 +241,10 @@ window.addEventListener('popstate', () => {
                               "
                 /> -->
                 <q-btn round class="bg-primary"
-                      flat icon="mdi-content-save" color="white"
-                      @click="enviarImagem"/>
+                      flat icon="mdi-content-save"
+                      color="white"
+                      @click="enviarImagem"
+                />
               </q-card-actions>
           </q-card>
         </q-dialog>
