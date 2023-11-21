@@ -142,11 +142,11 @@ const deleteAvatar = () => {
     <q-card
       class="my-card" flat bordered
       :style="$q.screen.lt.sm ?
-        'max-width: 80vw;' :
+        'width: 80vw; max-width: 80vw;' :
         'width: 50vw; max-width: 50vw;'"
     >
       <q-item
-        class="flex column items-center justify-center q-pa-xl"
+        class="flex column items-center justify-center q-pa-md"
         style="gap: 2rem; "
       >
         <q-item-section avatar>
