@@ -9,12 +9,22 @@ const $q = useQuasar();
 const storeListImgs = useListImgagesStore();
 // const { humanStorageSize } = format;
 
-const getListImgs = async () => {
-  storeListImgs.dadosImagens = await getListImgStorage();
-};
-getListImgs();
+// const getListImgs = async () => {
+//   storeListImgs.dadosImagens = await getListImgStorage();
+// };
+// getListImgs();
 
-const deletImg = (imagemIdDoc: string, pathImagem: string) => {
+(async () => getListImgStorage())();
+
+// (async () => {
+//   const dt = await teste();
+
+//   console.log(dt);
+// })();
+
+const deletImg = async (imagemIdDoc: string, pathImagem: string) => {
+  console.log(imagemIdDoc, pathImagem);
+
   $q.dialog({
     title: 'Atenção!',
     message: 'Tem certeza que quer apagar essa imagem?',
@@ -22,7 +32,8 @@ const deletImg = (imagemIdDoc: string, pathImagem: string) => {
   }).onOk(async () => {
     await deleteImgFirestore(imagemIdDoc, pathImagem);
 
-    await getListImgs();
+    // await getListImgs();
+    await getListImgStorage();
   });
 };
 
@@ -47,35 +58,25 @@ const dataCadastroFormatada = (dataImg: object) => {
 <template>
   <q-page class="flex column items-center">
     <div class="flex items-center q-mt-md full-width q-px-md">
-      <q-card flat bordered class="my-card full-width " >
-        <template v-if="!storeListImgs.dadosImagens.length">
+      <q-card flat bordered class="my-card full-width">
+        <template v-if="!storeListImgs.dadosImagens?.length">
           <q-card-section
-            class="justify-center text-center
-                   text-bold text-h5"
-            style="padding-block: 6.09rem ;"
+            class="justify-center text-center text-bold text-h5"
+            style="padding-block: 6.09rem"
           >
-              <q-icon
-                name="mdi-alert-circle-outline"
-                size="md"
-              />
-              Nenhum Visitante Cadastrado!
+            <q-icon name="mdi-alert-circle-outline" size="md" />
+            Nenhum Visitante Cadastrado!
           </q-card-section>
         </template>
 
         <template v-else>
           <q-card-section
-            class="flex justify-center  text-center
-                   text-bold text-h5 full-width no-margin"
+            class="flex justify-center text-center text-bold text-h5 full-width no-margin"
           >
-            <span
-              class="text-secondary q-mr-md"
-              style="font-size: 2rem;"
-              >
+            <span class="text-secondary q-mr-md" style="font-size: 2rem">
               Visitantes Cadastrados!
             </span>
-            <q-icon name="mdi-account-card"
-                    size="md" color="secondary"
-            />
+            <q-icon name="mdi-account-card" size="md" color="secondary" />
             <div class="full-width">
               <span>Quantidade de Visitantes: </span>
               {{ storeListImgs.dadosImagens.length }}
@@ -83,36 +84,40 @@ const dataCadastroFormatada = (dataImg: object) => {
           </q-card-section>
 
           <q-card-section
-            :class="('flex')+ ' '
-            +(storeListImgs.dadosImagens.length >= 4 && 'justify-center')"
-            style="gap: 20px;"
+            :class="
+              'flex' + ' ' + (storeListImgs.dadosImagens.length >= 4 && 'justify-center')
+            "
+            style="gap: 20px"
           >
-            <template v-for="dadosImagem in storeListImgs.dadosImagens" :key="dadosImagem">
+            <template
+              v-for="dadosImagem in storeListImgs.dadosImagens"
+              :key="dadosImagem"
+            >
               <div class="flex column">
                 <div class="flex column justify-center items-center">
-                <span class="text-bold text-secondary">Responsável Portaria:</span>
-                {{ dadosImagem.doc.nome_responsavel_portaria}}
+                  <span class="text-bold text-secondary">Responsável Portaria:</span>
+                  {{ dadosImagem.doc.nome_responsavel_portaria }}
                 </div>
 
                 <div class="flex column justify-center items-center">
-                <span class="text-bold text-secondary">Data e hora da visita:</span>
-                {{dataCadastroFormatada(dadosImagem)}}
+                  <span class="text-bold text-secondary">Data e hora da visita:</span>
+                  {{ dataCadastroFormatada(dadosImagem) }}
                 </div>
 
                 <q-img
                   :src="dadosImagem.doc.url_download"
-                  style="width: 300px; height: 200px; "
+                  style="width: 300px; height: 200px"
                   fit="contain"
-              >
-              <div class="absolute-bottom text-subtitle1 text-center">
-                  <q-icon name="mdi-delete"
-                          @click="deletImg( dadosImagem.id_doc, dadosImagem.doc.url_download)"
-                          class="cursor-pointer absolute-top-right q-mt-xs"
-                          size="sm"
-                  />
-                </div>
-              </q-img>
-
+                >
+                  <div class="absolute-bottom text-subtitle1 text-center">
+                    <q-icon
+                      name="mdi-delete"
+                      @click="deletImg(dadosImagem.id_doc, dadosImagem.doc.url_download)"
+                      class="cursor-pointer absolute-top-right q-mt-xs"
+                      size="sm"
+                    />
+                  </div>
+                </q-img>
               </div>
             </template>
           </q-card-section>

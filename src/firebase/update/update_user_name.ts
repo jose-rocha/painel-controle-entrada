@@ -1,4 +1,4 @@
-import { doc, serverTimestamp, updateDoc } from 'firebase/firestore/lite';
+import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { useDataStore } from 'src/stores/data-store';
 import { db } from '../connect_db';
 

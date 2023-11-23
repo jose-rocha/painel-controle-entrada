@@ -52,7 +52,6 @@ const essentialLinks: EssentialLinkProps[] = [
   //   icon: 'cloud_upload',
   //   link: '/enviar_img',
   // },
-
 ];
 
 getDataUserAuth();
@@ -63,10 +62,10 @@ function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 
-const logout = () => {
-  logoutFirebase();
+const logout = async () => {
+  await logoutFirebase();
 
-  router.push({ name: 'login' });
+  await router.push({ name: 'login' });
   store.accessToken = '';
   store.idUser = '';
   store.nome = '';
@@ -76,6 +75,8 @@ const logout = () => {
 
   store.series = [];
   storeListImgs.dadosImagens = [];
+
+  storeListImgs.unsubscribe(); // Pra para remover o listener do OnSnapShot
 };
 </script>
 
@@ -86,7 +87,7 @@ const logout = () => {
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title class="q-gutter-x-md flex items-center">
-          <b >Painel Administrativo </b>
+          <b>Painel Administrativo </b>
           <!-- <div class="bg-white q-pa-xs cursor-pointer" @click="() => router.push('/home')">
             <q-img
               src="/Logo-stagio.png"
@@ -99,11 +100,14 @@ const logout = () => {
 
         <q-btn dense flat icon="mdi-logout" @click="logout">
           <q-tooltip
-              anchor="bottom middle" class="bg-primary"
-              self="top middle" :offset="[10, 10]"
+            anchor="bottom middle"
+            class="bg-primary"
+            self="top middle"
+            :offset="[10, 10]"
           >
-            <strong>Sair</strong> do <em>sistema</em>
-            (<q-icon name="keyboard_arrow_down" />)
+            <strong>Sair</strong> do <em>sistema</em> (<q-icon
+              name="keyboard_arrow_down"
+            />)
           </q-tooltip>
         </q-btn>
       </q-toolbar>
@@ -113,29 +117,30 @@ const logout = () => {
       <q-list>
         <q-item-label header>
           <!-- Páginas -->
-          <q-img
-              src="/Logo-stagio.png"
-              spinner-color="white"
-              style="width: 8rem;"
-            />
+          <q-img src="/Logo-stagio.png" spinner-color="white" style="width: 8rem" />
         </q-item-label>
 
         <EssentialLink
-            v-for="link in essentialLinks"
-            :key="link.title" v-bind="link"
-            :Links="essentialLinks"
+          v-for="link in essentialLinks"
+          :key="link.title"
+          v-bind="link"
+          :Links="essentialLinks"
         />
       </q-list>
 
-      <div style="position: absolute; bottom: 0; left: 1rem;">
+      <div style="position: absolute; bottom: 0; left: 1rem">
         <span>
           Mudar o Tema para
           <b>{{ storeTheme.theme ? 'Claro' : 'Escuro' }}</b>
         </span>
 
-        <q-toggle v-model="storeTheme.theme" :icon="storeTheme.theme
-          ? 'mdi-moon-waxing-crescent'
-          : 'mdi-white-balance-sunny'" color="secondary" />
+        <q-toggle
+          v-model="storeTheme.theme"
+          :icon="
+            storeTheme.theme ? 'mdi-moon-waxing-crescent' : 'mdi-white-balance-sunny'
+          "
+          color="secondary"
+        />
       </div>
     </q-drawer>
 

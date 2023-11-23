@@ -2,7 +2,7 @@
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore, collection, getDocs,
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore';
 import {
   getAuth, signOut,
 } from 'firebase/auth';

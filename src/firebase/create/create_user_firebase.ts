@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {
   doc, getDoc, serverTimestamp, setDoc,
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore';
 import { auth, db } from '../connect_db';
 
 export const createUserFirebase = async (

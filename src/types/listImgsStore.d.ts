@@ -14,5 +14,6 @@ interface DataImgInterface {
 }
 
 export interface DataImagesArryInterface {
-  dadosImagens: DataImgInterface[]
+  dadosImagens: DataImgInterface[],
+  unsubscribe: () => void
 }
