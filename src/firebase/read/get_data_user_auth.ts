@@ -6,6 +6,17 @@ import { db } from '../connect_db';
 
 const store = useDataStore();
 
+interface userAuthInteface {
+  atualizado_em:{seconds: number, nanoseconds: number},
+  avatar: string,
+  cargo: string,
+  data_criacao: {seconds: number, nanoseconds:number},
+  email_usuario: string,
+  nome: string,
+  path_avatar_storage: string,
+  user_id: string,
+}
+
 const getDataUserAuth = async () => {
   const usersColection = collection(db, 'Users');
   const queryUserAuth = query(usersColection, where('user_id', '==', store.idUser));
@@ -16,17 +27,26 @@ const getDataUserAuth = async () => {
 
   const querySnapshot = await getDocs(queryUserAuth);
   const dataUserLoged = querySnapshot.docs.map((snapshot) => {
-    const user = snapshot.data();
+    /* eslint-disable camelcase */
+    const {
+      avatar, email_usuario,
+      nome, path_avatar_storage,
+    } = snapshot.data() as userAuthInteface;
 
-    store.nome = user.nome;
-    store.emailUser = user.email_usuario;
-    store.avatarUrl = user.avatar;
+    store.nome = nome;
+    store.emailUser = email_usuario;
+    store.avatarUrl = avatar;
 
     // console.log(user);
 
-    store.pathStorageImage = user.path_avatar_storage;
+    store.pathStorageImage = path_avatar_storage;
 
-    return user;
+    return {
+      avatar,
+      email_usuario,
+      nome,
+      path_avatar_storage,
+    };
   });
 
   return { dataUserLoged, getUsers };
