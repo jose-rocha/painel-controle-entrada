@@ -59,7 +59,9 @@ const registerUser = async () => {
       message: `
         Cadastro concluído com sucesso. <br>
         `,
-    }).onOk(() => nomeRef?.value.focus());
+    }).onOk(() => {
+      window.location.href = '/cadastrar_usuario';
+    });
 
     nomeRef.value?.resetValidation();
     emailRef.value?.resetValidation();
@@ -71,6 +73,8 @@ const registerUser = async () => {
     senha.value = '';
     confirmeSenha.value = '';
     cargo.value = '';
+
+    // nomeRef?.value.focus()
   } catch (error: any) {
     if (String(error).includes('auth/email-already-in-use')) {
       $q?.dialog({

@@ -26,6 +26,7 @@ watch(storeTheme, () => {
 onBeforeMount(async () => {
   redirect.value = true;
   const dataRouteIdFirebase = await useUidRouterGuardFirebase(store.idUser);
+
   if (!dataRouteIdFirebase) {
     await router.replace({ name: 'login' });
     redirect.value = false;
@@ -33,7 +34,6 @@ onBeforeMount(async () => {
 
     return;
   }
-  await router.replace({ name: 'home' });
   redirect.value = false;
 });
 

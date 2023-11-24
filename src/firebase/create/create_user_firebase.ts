@@ -37,7 +37,6 @@ export const createUserFirebase = async (
         cargo,
       });
 
-      console.log(docSnapshotRouterGuard);
       await setDoc(useUidRouterGuard, {
         email_usuario: email,
         user_id: user.uid,
