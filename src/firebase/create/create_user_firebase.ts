@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {
   doc, getDoc, serverTimestamp, setDoc,
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore';
 import { auth, db } from '../connect_db';
 
 export const createUserFirebase = async (
@@ -10,12 +10,12 @@ export const createUserFirebase = async (
   email: string,
   password: string,
 ) => {
-  console.log(
-    nome,
-    cargo,
-    email,
-    password,
-  );
+  // console.log(
+  //   nome,
+  //   cargo,
+  //   email,
+  //   password,
+  // );
 
   try {
     const create = await createUserWithEmailAndPassword(auth, email, password);
@@ -23,6 +23,9 @@ export const createUserFirebase = async (
     const { user } = create;
     const userDocRef = doc(db, 'Users', user.uid);
     const docSnapshot = await getDoc(userDocRef);
+
+    const useUidRouterGuard = doc(db, 'use_uid_router_guard', user.uid);
+    const docSnapshotRouterGuard = await getDoc(useUidRouterGuard);
 
     if (!docSnapshot.exists()) {
       await setDoc(userDocRef, {
@@ -34,11 +37,23 @@ export const createUserFirebase = async (
         cargo,
       });
 
-      console.log('Dados atrelado com sucesso!');
+      console.log(docSnapshotRouterGuard);
+      await setDoc(useUidRouterGuard, {
+        email_usuario: email,
+        user_id: user.uid,
+      });
     }
 
+    // if (!docSnapshotRouterGuard.exists()) {
+    //   await setDoc(useUidRouterGuard, {
+    //     email_usuario: email,
+    //     user_id: user.uid,
+    //   });
+    // }
+    // console.log('Dados atrelado com sucesso!');
+
     // console.log(user.uid);
-  } catch (error: any) {
+  } catch (error: any) {//eslint-disable-line
     const errorCode = error.code;
     // const errorMessage = error.message;
 

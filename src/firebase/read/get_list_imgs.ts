@@ -1,6 +1,6 @@
 import {
   collection, getDocs, query, orderBy,
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore';
 import { db } from '../connect_db';
 
 const getListImgStorage = async () => {

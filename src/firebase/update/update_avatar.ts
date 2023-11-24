@@ -1,5 +1,5 @@
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { serverTimestamp, doc, updateDoc } from 'firebase/firestore/lite';
+import { serverTimestamp, doc, updateDoc } from 'firebase/firestore';
 import { useDataStore } from 'src/stores/data-store';
 import { db, storage } from '../connect_db';
 

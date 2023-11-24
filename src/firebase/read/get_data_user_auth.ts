@@ -1,7 +1,7 @@
 import { useDataStore } from 'src/stores/data-store';
 import {
   collection, getDocs, query, where,
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore';
 import { db } from '../connect_db';
 
 const store = useDataStore();

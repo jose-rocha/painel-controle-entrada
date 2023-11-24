@@ -2,15 +2,13 @@
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore, collection, getDocs,
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore';
 import {
-  getAuth, signOut,
+  getAuth,
+  //  signOut,
 } from 'firebase/auth';
 
-import { useDataStore } from 'src/stores/data-store';
 import { getStorage } from 'firebase/storage';
-
-const store = useDataStore();
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDEuZjY3Ugoc2NCT3qSBEsrd45E7WRHF7U',
@@ -36,20 +34,8 @@ const getDataCollection = async () => {
   return listTurma;
 };
 
-const logoutFirebase = () => {
-  signOut(auth).then(() => {
-    store.isLogged = false;
-  // Sign-out successful.
-  }).catch((error) => {
-    console.log(error);
-    store.isLogged = true;
-  // An error happened.
-  });
-};
-
 export {
   getDataCollection,
-  logoutFirebase,
   db,
   auth,
   storage,

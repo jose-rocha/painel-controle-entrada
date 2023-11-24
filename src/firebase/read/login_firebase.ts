@@ -1,7 +1,7 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import {
   collection, getDocs, query, where,
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore';
 import { useDataStore } from 'src/stores/data-store';
 import { auth, db } from '../connect_db';
 

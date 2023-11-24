@@ -1,6 +1,6 @@
 import {
   doc, deleteDoc, updateDoc, serverTimestamp,
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore';
 import { deleteObject, ref } from 'firebase/storage';
 import { useDataStore } from 'src/stores/data-store';
 import { db, storage } from '../connect_db';
