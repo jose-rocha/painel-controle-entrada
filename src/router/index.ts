@@ -45,6 +45,7 @@ export default route((/* { store, ssrContext } */) => {
     //   next();
     // }
 
+    // return next();
     return next();
   });
 

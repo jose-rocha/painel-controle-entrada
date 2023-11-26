@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onBeforeMount, ref, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useDataStore } from 'src/stores/data-store';
 import { useThemeStore } from 'src/stores/theme-store';
@@ -7,18 +7,34 @@ import { useRouter } from 'vue-router';
 
 import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue';
 
-import { logoutFirebase } from 'src/firebase/connect_db';
+import { logoutFirebase } from 'src/firebase/read/logout_firebase';
 import { getDataUserAuth } from 'src/firebase/read/get_data_user_auth';
 import { useListImgagesStore } from 'src/stores/lista-imgs-store';
+import { useUidRouterGuardFirebase } from 'src/firebase/read/get_data_use_uid_router_guard';
 
 const $q = useQuasar();
 const router = useRouter();
 const store = useDataStore();
 const storeTheme = useThemeStore();
 const storeListImgs = useListImgagesStore();
+const redirect = ref(false);
 
 watch(storeTheme, () => {
   $q.dark.set(storeTheme.theme);
+});
+
+onBeforeMount(async () => {
+  redirect.value = true;
+  const dataRouteIdFirebase = await useUidRouterGuardFirebase(store.idUser);
+
+  if (!dataRouteIdFirebase) {
+    await router.replace({ name: 'login' });
+    redirect.value = false;
+    // window.history.pushState({}, '', '#camera');
+
+    return;
+  }
+  redirect.value = false;
 });
 
 const essentialLinks: EssentialLinkProps[] = [
@@ -143,6 +159,20 @@ const logout = async () => {
         />
       </div>
     </q-drawer>
+
+    <template v-if="redirect">
+      <div
+        class="bg-secondary full-width"
+        style="position: absolute; z-index: 10000; height: 100dvh"
+      >
+        <q-inner-loading
+          showing
+          label="Aguaede..."
+          label-class="text-teal"
+          label-style="font-size: 1.1em"
+        />
+      </div>
+    </template>
 
     <q-page-container>
       <router-view />

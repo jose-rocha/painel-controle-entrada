@@ -1,6 +1,6 @@
 import {
-  collection, query, orderBy, onSnapshot,
-} from 'firebase/firestore';
+  collection, getDocs, query, orderBy,
+} from 'firebase/firestore/lite';
 import { db } from '../connect_db';
 
 import { useListImgagesStore } from '../../stores/lista-imgs-store';
