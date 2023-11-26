@@ -23,7 +23,7 @@ const storeListImgs = useListImgagesStore();
 // })();
 
 const deletImg = async (imagemIdDoc: string, pathImagem: string) => {
-  console.log(imagemIdDoc, pathImagem);
+  // console.log(imagemIdDoc, pathImagem);
 
   $q.dialog({
     title: 'Atenção!',
@@ -33,7 +33,7 @@ const deletImg = async (imagemIdDoc: string, pathImagem: string) => {
     await deleteImgFirestore(imagemIdDoc, pathImagem);
 
     // await getListImgs();
-    await getListImgStorage();
+    // await getListImgStorage();
   });
 };
 
