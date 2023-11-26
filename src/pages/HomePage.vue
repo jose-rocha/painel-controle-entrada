@@ -95,12 +95,46 @@ const dataCadastroFormatada = (dataImg: object) => {
             >
               <div class="flex column">
                 <div class="flex column justify-center items-center">
-                  <span class="text-bold text-secondary">Responsável Portaria:</span>
+                  <span class="text-bold text-primary">
+                    <q-icon name="mdi-boom-gate-up" size="md" />
+                    Responsável Portaria:
+                  </span>
                   {{ dadosImagem.doc.nome_responsavel_portaria }}
                 </div>
 
                 <div class="flex column justify-center items-center">
-                  <span class="text-bold text-secondary">Data e hora da visita:</span>
+                  <span class="text-bold text-secondary">
+                    <q-icon name="mdi-account-child" size="md" />
+                    Nome do Visitante:
+                  </span>
+                  {{ dadosImagem.doc.nome_responsavel_aluno }}
+                </div>
+
+                <div class="flex column justify-center items-center">
+                  <span class="text-bold text-secondary">
+                    <q-icon
+                      :name="dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                          ?'mdi-account-child' : 'mdi-account-group'" size="md"
+                    />
+                    <template v-if="dadosImagem.doc.parentesco_do_aluno === 'Responsavel'">
+                      Parentesco:
+                    </template>
+                    <template v-else>
+                      Visitante ou terceiro:
+                    </template>
+                  </span>
+                  {{
+                  dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                    ? 'Responsável'
+                    : dadosImagem.doc.parentesco_do_aluno
+                  }}
+                </div>
+
+                <div class="flex column justify-center items-center">
+                  <span class="text-bold text-secondary">
+                    <q-icon name="mdi-calendar-clock" size="md" />
+                    Data e Hora da Visita:
+                  </span>
                   {{ dataCadastroFormatada(dadosImagem) }}
                 </div>
 
