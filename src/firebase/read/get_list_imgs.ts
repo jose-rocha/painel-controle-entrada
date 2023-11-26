@@ -8,7 +8,7 @@ import { useListImgagesStore } from '../../stores/lista-imgs-store';
 const storeListImgs = useListImgagesStore();
 
 const getListImgStorage = async () => {
-  const docsRef = collection(db, 'ListaDeVisitantes');
+  const docsRef = collection(db, 'lista_de_visitantes');
   const docOrderBy = query(docsRef, orderBy('data_criacao', 'desc'));
 
   storeListImgs.unsubscribe = onSnapshot(docOrderBy, (querySnapShot) => {

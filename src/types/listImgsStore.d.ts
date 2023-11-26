@@ -8,6 +8,7 @@ interface DataImgInterface {
   nome_responsavel_portaria: string,
   url_download: string,
   nome_responsavel_aluno: string,
+  nome_aluno: string,
   parentesco_do_aluno: string,
   },
   id_doc: string,

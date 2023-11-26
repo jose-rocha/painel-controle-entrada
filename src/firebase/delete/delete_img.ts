@@ -15,7 +15,7 @@ const deleImgStorage = async (pathImg: string) => {
 const deleteImgFirestore = async (idImg: string, pathImagem: string) => {
   try {
     // deletando da collection ListaDeImagens
-    await deleteDoc(doc(db, 'ListaDeVisitantes', idImg));
+    await deleteDoc(doc(db, 'lista_de_visitantes', idImg));
 
     await deleImgStorage(pathImagem);
   } catch (erro: any) { // eslint-disable-line

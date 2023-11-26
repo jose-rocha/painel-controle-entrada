@@ -27,7 +27,7 @@ const auth = getAuth();
 const storage = getStorage(app);
 
 const getDataCollection = async () => {
-  const turmaCollection = collection(db, 'ListaDeVisitantes');
+  const turmaCollection = collection(db, 'lista_de_visitantes');
   const turmaSnapshot = await getDocs(turmaCollection);
   const listTurma = turmaSnapshot.docs.map((docParams) => docParams.data());
   // console.log(auth);
