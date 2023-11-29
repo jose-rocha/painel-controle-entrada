@@ -269,11 +269,22 @@ const enableBtnRegister = computed(
             <template v-if="$q.screen.gt.sm">
               <q-btn
                 label="Cadastrar Usuário"
-                icon-right="mdi-account-plus-outline"
+                icon="mdi-account-plus-outline"
                 no-caps
                 color="primary"
                 @click="showForm = true"
                 style="position: absolute; right: 6px"
+              />
+            </template>
+
+            <template v-else>
+              <q-btn
+                label="Cadastrar Usuário"
+                icon="mdi-account-plus-outline"
+                no-caps
+                color="primary"
+                class="q-mt-sm"
+                @click="showForm = true"
               />
             </template>
             <!-- <div class="text-subtitle2 text-center">by John Doe</div> -->
