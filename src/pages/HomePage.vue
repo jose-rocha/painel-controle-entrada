@@ -122,65 +122,134 @@ const dataCadastroFormatada = (dataImg: object) => {
                   </div>
                   <!-- Parentesco -->
                   <div class="flex items-end" style="gap: 15px">
-                    <q-icon
-                      :name="
-                        dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
-                          ? 'mdi-account-group'
-                          : 'mdi-account-tie'
-                      "
-                      size="md"
-                      :style="
-                        dadosImagem.doc.parentesco_do_aluno !== 'Responsavel' &&
-                        'margin-left: -0.4rem'
-                      "
-                      color="secondary"
-                    />
-                    <span class="text-bold text-secondary">
-                      {{
-                        dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
-                          ? 'Parentesco:'
-                          : 'Visitante ou terceiro:'
-                      }}
-                    </span>
-                    {{
-                      dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
-                        ? 'Responsável'
-                        : dadosImagem.doc.parentesco_do_aluno
-                    }}
+                    <q-card-section class="text-white no-padding">
+                      <div>
+                        <q-icon
+                          :name="
+                            dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                              ? 'mdi-account-group'
+                              : 'mdi-account-tie'
+                          "
+                          size="45px"
+                          :style="
+                            dadosImagem.doc.parentesco_do_aluno !== 'Responsavel' &&
+                            'margin-left: -0.7rem'
+                          "
+                          color="secondary"
+                        />
+                        <span
+                          class="text-bold text-secondary"
+                          :style="
+                            dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                              ? 'position: absolute; top: 5px; right: 6px'
+                              : 'position: absolute; top: 0px; width: 150px'
+                          "
+                        >
+                          {{
+                            dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                              ? ' Parentesco:'
+                              : 'Visitante ou terceiro:'
+                          }}
+                        </span>
+                      </div>
+
+                      <div
+                        class="text-subtitle2"
+                        style="dadosImagem.doc.parentesco_do_aluno === 'Responsavel' ?
+                          margin-left: 2.7rem;
+                          line-height: 5px;
+                          position: relative;
+                          top: -12px;
+                        "
+                        :style="
+                          dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                            ? `margin-left: 3.5rem;
+                               line-height: 5px;
+                               position: relative;
+                               top: -14px;
+                               `
+                            : `margin-left: 2.3rem;
+                               line-height: 5px;
+                               position: relative;
+                               top: -14px;
+                               `
+                        "
+                      >
+                        {{
+                          dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                            ? ' Responsável'
+                            : dadosImagem.doc.parentesco_do_aluno
+                        }}
+                      </div>
+                    </q-card-section>
                   </div>
+
                   <!-- Nome do Visitante ou Responsável -->
-                  <div class="flex items-end" style="gap: 2px">
-                    <q-icon
-                      :name="
-                        dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
-                          ? 'mdi-account-child'
-                          : 'mdi-account-hard-hat'
-                      "
-                      size="md"
-                      style="margin-left: -0.5rem"
-                      color="secondary"
-                    />
-                    <span class="text-bold text-secondary q-mr-xs">
-                      {{
-                        dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
-                          ? ' Nome do Responsável:'
-                          : 'Nome do Visitante:'
-                      }}
-                    </span>
-                    {{ dadosImagem.doc.nome_responsavel_aluno }}
-                  </div>
-                  <!-- Nome do ALuno -->
-                  <template v-if="dadosImagem.doc.parentesco_do_aluno === 'Responsavel'">
-                    <div class="flex items-end" style="gap: 3px">
+                  <q-card-section class="text-white no-padding">
+                    <div>
                       <q-icon
-                        name="mdi-account"
-                        size="md"
+                        :name="
+                          dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                            ? 'mdi-account-child'
+                            : 'mdi-account-hard-hat'
+                        "
+                        size="lg"
                         style="margin-left: -0.5rem"
                         color="secondary"
                       />
-                      <span class="text-bold text-secondary"> Nome do Aluno: </span>
-                      {{ dadosImagem.doc.nome_aluno }}
+                      <span
+                        class="text-bold text-secondary q-mr-xs"
+                        style="position: absolute"
+                      >
+                        {{
+                          dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                            ? ' Nome do Responsável:'
+                            : ' Nome do Visitante:'
+                        }}
+                      </span>
                     </div>
+
+                    <div
+                      class="text-subtitle2"
+                      style="
+                        margin-left: 1.9rem;
+                        line-height: 5px;
+                        position: relative;
+                        top: -12px;
+                      "
+                    >
+                      {{ dadosImagem.doc.nome_responsavel_aluno }}
+                    </div>
+                  </q-card-section>
+                  <!-- Nome do ALuno -->
+                  <template v-if="dadosImagem.doc.parentesco_do_aluno === 'Responsavel'">
+                    <q-card-section class="text-white no-padding">
+                      <div>
+                        <q-icon
+                          name="mdi-account"
+                          size="lg"
+                          style="margin-left: -0.5rem"
+                          color="secondary"
+                        />
+                        <span
+                          class="text-bold text-secondary q-mr-xs"
+                          style="position: absolute"
+                        >
+                          Nome do Aluno:
+                        </span>
+                      </div>
+                      <div
+                        class="text-subtitle2"
+                        style="
+                          margin-left: 1.9rem;
+                          line-height: 5px;
+                          position: relative;
+                          top: -12px;
+                        "
+                      >
+                        {{ dadosImagem.doc.nome_aluno }}
+                      </div>
+                    </q-card-section>
                   </template>
 
                   <!-- Data e hora -->
