@@ -60,8 +60,14 @@ const registerUser = async () => {
       message: `
         Cadastro concluído com sucesso. <br>
         `,
-    }).onOk(() => {
-      window.location.href = '/cadastrar_usuario';
+    }).onOk(async () => {
+      const usersFirebase = await getDataUserAuth();
+
+      users.value = usersFirebase.getUsers.docs.map((user) => user.data());
+
+      showForm.value = false;
+      $q.loading.hide();
+      // window.location.href = '/cadastrar_usuario';
     });
 
     nomeRef.value?.resetValidation();
@@ -121,27 +127,6 @@ const enableBtnRegister = computed(
 
 <template>
   <div class="q-pa-sm full-width flex justify-center">
-    <div class="full-width justify-end flex row">
-      <template v-if="!showForm">
-        <q-btn
-          label="Cadastrar Usuário"
-          icon-right="mdi-form-select"
-          no-caps
-          color="secondary"
-          @click="showForm = true"
-        />
-      </template>
-
-      <template v-else>
-        <q-btn
-          label="Cancelar Cadastro"
-          icon-right="mdi-cancel"
-          no-caps
-          color="negative"
-          @click="showForm = false"
-        />
-      </template>
-    </div>
     <!-- Form @reset="onReset"> -->
     <template v-if="showForm">
       <div class="justify-center flex row">
@@ -259,6 +244,15 @@ const enableBtnRegister = computed(
                 : 'mdi-block-helper'
             "
           />
+
+          <q-btn
+            label="Cancelar Cadastro"
+            class="col-10 col-xs-11 q-py-md q-mb-md"
+            icon="mdi-arrow-left"
+            no-caps
+            color="negative"
+            @click="showForm = false"
+          />
         </q-form>
       </div>
     </template>
@@ -268,18 +262,54 @@ const enableBtnRegister = computed(
       <div class="justify-center flex row q-mt-md" style="width: 65rem">
         <q-card class="my-card full-width">
           <q-card-section class="flex column justify-center">
-            <div class="text-h6 text-center text-bold text-primary">
-              Usuários Cadastrados
+            <div class="flex text-h6 justify-center items-end text-bold text-primary">
+              <q-icon name="mdi-format-list-bulleted-square" size="md" class="q-mx-xs" />
+              <span style="position: relative; bottom: -4px">Usuários Cadastrados</span>
             </div>
+            <template v-if="$q.screen.gt.sm">
+              <q-btn
+                label="Cadastrar Usuário"
+                icon-right="mdi-account-plus-outline"
+                no-caps
+                color="primary"
+                @click="showForm = true"
+                style="position: absolute; right: 6px"
+              />
+            </template>
             <!-- <div class="text-subtitle2 text-center">by John Doe</div> -->
           </q-card-section>
 
           <q-separator dark />
-          <template v-for="user in users" :key="user.id">
-            <q-card-section class="flex text-secondary" style="gap: 10px">
-              <span><b>Nome:</b> {{ user.nome }}</span>
-              <span> <b>Email:</b> {{ user.email_usuario }}</span>
-              <span><b>Cargo: </b>{{ user.cargo }}</span>
+          <template
+            v-for="user in users.sort((item1, item2) =>
+              item1.nome.localeCompare(item2.nome),
+            )"
+            :key="user.id"
+          >
+            <q-card-section class="flex" style="gap: 10px">
+              <div style="flex: 1; gap: 5px" class="flex items-center justify-start">
+                <b class="text-secondary">
+                  <q-icon name="mdi-account" size="md" />
+                  <span style="position: relative; bottom: -7px">Nome:</span>
+                </b>
+                <span style="position: relative; bottom: -7px">{{ user.nome }}</span>
+              </div>
+              <div style="flex: 1; gap: 5px" class="flex items-center justify-start">
+                <b class="text-secondary">
+                  <q-icon name="mdi-email" size="md" class="q-mx-xs" />
+                  <span style="position: relative; bottom: -7px">Email:</span>
+                </b>
+                <span style="position: relative; bottom: -5px">{{
+                  user.email_usuario
+                }}</span>
+              </div>
+              <div style="flex: 1; gap: 5px" class="flex items-center justify-start">
+                <b class="text-secondary">
+                  <q-icon name="mdi-briefcase" size="md" class="q-mx-xs" />
+                  <span style="position: relative; bottom: -5px">Cargo:</span>
+                </b>
+                <span style="position: relative; bottom: -5px">{{ user.cargo }}</span>
+              </div>
               <!-- <span><b>Data de cadastro: </b>{{ user.data_criacao }}</span> -->
             </q-card-section>
 
