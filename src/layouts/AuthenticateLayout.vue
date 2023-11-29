@@ -167,7 +167,7 @@ const logout = async () => {
       >
         <q-inner-loading
           showing
-          label="Aguaede..."
+          label="Aguarde..."
           label-class="text-teal"
           label-style="font-size: 1.1em"
         />
