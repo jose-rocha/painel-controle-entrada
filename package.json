@@ -36,5 +36,19 @@
     "node": "^18 || ^16 || ^14.19",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "operator-linebreak": [
+      "error",
+      "eslint-config-prettier",
+      {
+        "overrides": {
+          ":": "before"
+        }
+      }
+    ]
+
   }
 }

@@ -84,8 +84,8 @@ const dataCadastroFormatada = (dataImg: object) => {
           </q-card-section>
 
           <q-card-section
-            :class="'flex' + ' '
-                  + (storeListImgs.dadosImagens.length >= 4 && 'justify-center')
+            :class="
+              'flex' + ' ' + (storeListImgs.dadosImagens.length >= 4 && 'justify-center')
             "
             style="gap: 20px"
           >
@@ -93,98 +93,106 @@ const dataCadastroFormatada = (dataImg: object) => {
               v-for="dadosImagem in storeListImgs.dadosImagens"
               :key="dadosImagem"
             >
-            <div class="flex column">
-              <div style="flex: 1; gap: 5px;" class="flex column q-px-md">
-                <!-- Responsável Portaria -->
-                <div class="flex items-end" style="gap: 5px;">
-                  <q-icon name="mdi-boom-gate-up" size="md" color="primary" />
-                  <span class="text-bold text-primary">
-                    Responsável Portaria:
-                  </span>
-                  {{ dadosImagem.doc.nome_responsavel_portaria }}
-                  <span >
-                  </span>
+              <q-card class="flex column q-py-md q-px-sm">
+                <div style="flex: 1" class="flex items-end q-mt-sm q-px-md">
+                  <q-img
+                    :src="dadosImagem.doc.url_download"
+                    style="width: 300px; height: 200px"
+                    fit="cover"
+                  >
+                    <div class="absolute-bottom text-subtitle1 text-center">
+                      <q-icon
+                        name="mdi-delete"
+                        @click="
+                          deletImg(dadosImagem.id_doc, dadosImagem.doc.url_download)
+                        "
+                        class="cursor-pointer absolute-top-right q-mt-xs"
+                        size="sm"
+                      />
+                    </div>
+                  </q-img>
                 </div>
+                <div style="flex: 1; gap: 5px" class="flex column q-px-md q-mt-md">
+                  <!-- Responsável Portaria -->
+                  <div class="flex items-end" style="gap: 5px">
+                    <q-icon name="mdi-boom-gate-up" size="md" color="primary" />
+                    <span class="text-bold text-primary"> Responsável Portaria: </span>
+                    {{ dadosImagem.doc.nome_responsavel_portaria }}
+                    <span> </span>
+                  </div>
                   <!-- Parentesco -->
-                <div class="flex items-end" style="gap: 5px;">
-                  <q-icon
-                    :name="dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
-                        ?'mdi-account-group' : 'mdi-account-tie'" size="md"
-                    style="margin-left: -0.5rem;"
-                    color="secondary"
-                  />
-                  <span class="text-bold text-secondary">
-                    {{ dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
-                        ? 'Parentesco:' : 'Visitante ou terceiro:'
-                    }}
-                  </span>
-                    {{ dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
-                        ? 'Responsável'
-                        : dadosImagem.doc.parentesco_do_aluno
-                    }}
-                </div>
-                <!-- Nome do Visitante ou Responsável -->
-                <div class="flex items-end" style="gap: 2px;">
-                  <q-icon
-                    :name="dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
-                      ?'mdi-account-child': 'mdi-account-hard-hat'"
-                    size="md"
-                    style="margin-left: -0.5rem;"
-                    color="secondary"
-                  />
-                  <span class="text-bold text-secondary q-mr-xs">
-                    {{ dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
-                        ? ' Nome do Responsável:': 'Nome do Visitante:'
-                    }}
-                  </span>
-                  {{ dadosImagem.doc.nome_responsavel_aluno }}
-                </div>
-                <!-- Nome do ALuno -->
-                <template v-if="dadosImagem.doc.parentesco_do_aluno === 'Responsavel'">
-                  <div class="flex items-end" style="gap: 3px;">
+                  <div class="flex items-end" style="gap: 5px">
                     <q-icon
-                      name="mdi-account" size="md"
-                      style="margin-left: -0.5rem;"
+                      :name="
+                        dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                          ? 'mdi-account-group'
+                          : 'mdi-account-tie'
+                      "
+                      size="md"
+                      style="margin-left: -0.5rem"
                       color="secondary"
                     />
                     <span class="text-bold text-secondary">
-                      Nome do Aluno:
+                      {{
+                        dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                          ? 'Parentesco:'
+                          : 'Visitante ou terceiro:'
+                      }}
                     </span>
-                    {{ dadosImagem.doc.nome_aluno }}
+                    {{
+                      dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                        ? 'Responsável'
+                        : dadosImagem.doc.parentesco_do_aluno
+                    }}
                   </div>
-                </template>
-
-                <!-- Data e hora -->
-                <div class="flex items-end" style="gap: 5px">
-                  <q-icon
-                    name="mdi-calendar-clock" size="md"
-                    style="margin-left: -0.3rem;"
-                    color="secondary"
-                  />
-                  <span class="text-bold text-secondary">
-                    Data e Hora da Visita:
-                  </span>
-                  {{ dataCadastroFormatada(dadosImagem) }}
-                </div>
-              </div>
-
-              <div style="flex: 1;" class="flex items-end q-mt-sm q-px-md">
-                <q-img
-                  :src="dadosImagem.doc.url_download"
-                  style="width: 300px; height: 200px"
-                  fit="cover"
-                >
-                  <div class="absolute-bottom text-subtitle1 text-center">
+                  <!-- Nome do Visitante ou Responsável -->
+                  <div class="flex items-end" style="gap: 2px">
                     <q-icon
-                      name="mdi-delete"
-                      @click="deletImg(dadosImagem.id_doc, dadosImagem.doc.url_download)"
-                      class="cursor-pointer absolute-top-right q-mt-xs"
-                      size="sm"
+                      :name="
+                        dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                          ? 'mdi-account-child'
+                          : 'mdi-account-hard-hat'
+                      "
+                      size="md"
+                      style="margin-left: -0.5rem"
+                      color="secondary"
                     />
+                    <span class="text-bold text-secondary q-mr-xs">
+                      {{
+                        dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
+                          ? ' Nome do Responsável:'
+                          : 'Nome do Visitante:'
+                      }}
+                    </span>
+                    {{ dadosImagem.doc.nome_responsavel_aluno }}
                   </div>
-                </q-img>
-              </div>
-              </div>
+                  <!-- Nome do ALuno -->
+                  <template v-if="dadosImagem.doc.parentesco_do_aluno === 'Responsavel'">
+                    <div class="flex items-end" style="gap: 3px">
+                      <q-icon
+                        name="mdi-account"
+                        size="md"
+                        style="margin-left: -0.5rem"
+                        color="secondary"
+                      />
+                      <span class="text-bold text-secondary"> Nome do Aluno: </span>
+                      {{ dadosImagem.doc.nome_aluno }}
+                    </div>
+                  </template>
+
+                  <!-- Data e hora -->
+                  <div class="flex items-end" style="gap: 5px">
+                    <q-icon
+                      name="mdi-calendar-clock"
+                      size="md"
+                      style="margin-left: -0.3rem"
+                      color="secondary"
+                    />
+                    <span class="text-bold text-secondary"> Data e Hora da Visita: </span>
+                    {{ dataCadastroFormatada(dadosImagem) }}
+                  </div>
+                </div>
+              </q-card>
             </template>
           </q-card-section>
         </template>

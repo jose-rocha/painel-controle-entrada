@@ -72,7 +72,7 @@ const showPassword = ref<boolean>(false);
     <q-form
       @submit="login"
       class="q-gutter-xs row justify-center"
-      :style="$q.screen.gt.sm && 'max-width: 50%;'"
+      :style="$q.screen.gt.sm ? 'max-width: 30%;' : 'width: 40rem'"
     >
       <!-- <h5 class="q-my-xs text-bold full-width
                  text-center text-primary">

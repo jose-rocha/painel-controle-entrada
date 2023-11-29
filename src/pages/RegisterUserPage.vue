@@ -7,6 +7,7 @@ import { getDataUserAuth } from '../firebase/read/get_data_user_auth';
 
 const $q = useQuasar();
 
+const showForm = ref(false);
 const nome = ref('');
 const email = ref('');
 const senha = ref('');
@@ -120,146 +121,175 @@ const enableBtnRegister = computed(
 
 <template>
   <div class="q-pa-sm full-width flex justify-center">
-    <!-- @reset="onReset"> -->
-    <div class="full-width justify-center flex row">
-      <q-form
-        @submit="registerUser"
-        class="q-gutter-xs row justify-center"
-        :style="$q.screen.gt.sm && 'max-width: 50%;'"
-      >
-        <div class="q-pa-xl">
-          <q-img src="/Logo-stagio.png" spinner-color="white" style="width: 15rem" />
-        </div>
-
-        <q-input
-          autofocus
-          v-model="nome"
-          filled
-          class="col-10 col-xs-11"
-          label-slot
-          input-class="q-pl-xs "
-          lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Por favor digite um nome']"
-          ref="nomeRef"
-        >
-          <template v-slot:label>
-            <span class="q-pl-xs">Digite o Nome *</span>
-          </template>
-        </q-input>
-
-        <q-input
-          v-model="email"
-          filled
-          class="col-10 col-xs-11"
-          label-slot
-          input-class="q-pl-xs "
-          lazy-rules
-          :rules="[
-            (val) => (val && val.length > 0) || 'Por favor digite um email',
-            (val) =>
-              emailRegex.test(val) ||
-              'Digite um email válido! ex: fulano.ciclano@gmail.com',
-          ]"
-          ref="emailRef"
-        >
-          <template v-slot:label>
-            <span class="q-pl-xs">Digite um email *</span>
-          </template>
-        </q-input>
-
-        <q-input
-          v-model="senha"
-          filled
-          :type="showPassword ? 'text' : 'password'"
-          class="col-10 col-xs-11"
-          label-slot
-          input-class="q-pl-xs "
-          lazy-rules
-          :rules="[(val) => (val !== null && val !== '') || 'Por favor digite uma senha']"
-          ref="senhaRef"
-        >
-          <template v-slot:label>
-            <span class="q-pl-xs">Digite uma senha *</span>
-          </template>
-
-          <template v-slot:append>
-            <q-icon
-              class="cursor-pointer"
-              :name="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              @click="showPassword = !showPassword"
-            />
-          </template>
-        </q-input>
-
-        <q-input
-          v-model="confirmeSenha"
-          filled
-          :type="showConfirmePassword ? 'text' : 'password'"
-          class="col-10 col-xs-11"
-          label-slot
-          input-class="q-pl-xs "
-          lazy-rules
-          :rules="[(val) => (val && val === senha) || 'As senhas não são iguais!']"
-          hide-bottom-space
-          ref="confirmeSenhaRef"
-        >
-          <template v-slot:label>
-            <span class="q-pl-xs"> Confirme a senha *</span>
-          </template>
-
-          <template v-slot:append>
-            <q-icon
-              class="cursor-pointer"
-              :name="showConfirmePassword ? 'mdi-eye' : 'mdi-eye-off'"
-              @click="showConfirmePassword = !showConfirmePassword"
-            />
-          </template>
-        </q-input>
-
-        <div class="col-10 row col-xs-11 items-center q-py-sm">
-          <h6 class="no-margin text-secondary">Cargo:</h6>
-          <q-option-group v-model="cargo" :options="opcoes" color="primary" inline />
-        </div>
-
+    <div class="full-width justify-end flex row">
+      <template v-if="!showForm">
         <q-btn
-          :label="enableBtnRegister ? 'Cadastrar Usuário' : 'Preencha todos os campos!'"
-          class="col-10 col-xs-11 q-py-md q-mb-md"
-          type="submit"
-          color="secondary"
+          label="Cadastrar Usuário"
+          icon-right="mdi-form-select"
           no-caps
-          :disable="!enableBtnRegister"
-          :icon-right="
-            enableBtnRegister ? 'mdi-checkbox-marked-circle-outline' : 'mdi-block-helper'
-          "
+          color="secondary"
+          @click="showForm = true"
         />
-      </q-form>
+      </template>
+
+      <template v-else>
+        <q-btn
+          label="Cancelar Cadastro"
+          icon-right="mdi-cancel"
+          no-caps
+          color="negative"
+          @click="showForm = false"
+        />
+      </template>
     </div>
-
-    <div class="full-width justify-center flex row q-mt-md">
-      <q-card class="my-card" style="width: 80rem">
-        <q-card-section class="flex column justify-center">
-          <div class="text-h6 text-center text-bold text-primary">
-            Usuários Cadastrados
+    <!-- @reset="onReset"> -->
+    <template v-if="showForm">
+      <div class="full-width justify-center flex row">
+        <q-form
+          @submit="registerUser"
+          class="q-gutter-xs row justify-center"
+          :style="$q.screen.gt.sm && 'max-width: 50%;'"
+        >
+          <div class="q-pa-xl">
+            <q-img src="/Logo-stagio.png" spinner-color="white" style="width: 15rem" />
           </div>
-          <!-- <div class="text-subtitle2 text-center">by John Doe</div> -->
-        </q-card-section>
 
-        <template v-for="user in users" :key="user.id">
-          <q-card-section class="flex text-secondary" style="gap: 10px">
-            <span><b>Nome:</b> {{ user.nome }}</span>
-            <span> <b>Email:</b> {{ user.email_usuario }}</span>
-            <span><b>Cargo: </b>{{ user.cargo }}</span>
-            <!-- <span><b>Data de cadastro: </b>{{ user.data_criacao }}</span> -->
+          <q-input
+            autofocus
+            v-model="nome"
+            filled
+            class="col-10 col-xs-11"
+            label-slot
+            input-class="q-pl-xs "
+            lazy-rules
+            :rules="[(val) => (val && val.length > 0) || 'Por favor digite um nome']"
+            ref="nomeRef"
+          >
+            <template v-slot:label>
+              <span class="q-pl-xs">Digite o Nome *</span>
+            </template>
+          </q-input>
+
+          <q-input
+            v-model="email"
+            filled
+            class="col-10 col-xs-11"
+            label-slot
+            input-class="q-pl-xs "
+            lazy-rules
+            :rules="[
+              (val) => (val && val.length > 0) || 'Por favor digite um email',
+              (val) =>
+                emailRegex.test(val) ||
+                'Digite um email válido! ex: fulano.ciclano@gmail.com',
+            ]"
+            ref="emailRef"
+          >
+            <template v-slot:label>
+              <span class="q-pl-xs">Digite um email *</span>
+            </template>
+          </q-input>
+
+          <q-input
+            v-model="senha"
+            filled
+            :type="showPassword ? 'text' : 'password'"
+            class="col-10 col-xs-11"
+            label-slot
+            input-class="q-pl-xs "
+            lazy-rules
+            :rules="[
+              (val) => (val !== null && val !== '') || 'Por favor digite uma senha',
+            ]"
+            ref="senhaRef"
+          >
+            <template v-slot:label>
+              <span class="q-pl-xs">Digite uma senha *</span>
+            </template>
+
+            <template v-slot:append>
+              <q-icon
+                class="cursor-pointer"
+                :name="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                @click="showPassword = !showPassword"
+              />
+            </template>
+          </q-input>
+
+          <q-input
+            v-model="confirmeSenha"
+            filled
+            :type="showConfirmePassword ? 'text' : 'password'"
+            class="col-10 col-xs-11"
+            label-slot
+            input-class="q-pl-xs "
+            lazy-rules
+            :rules="[(val) => (val && val === senha) || 'As senhas não são iguais!']"
+            hide-bottom-space
+            ref="confirmeSenhaRef"
+          >
+            <template v-slot:label>
+              <span class="q-pl-xs"> Confirme a senha *</span>
+            </template>
+
+            <template v-slot:append>
+              <q-icon
+                class="cursor-pointer"
+                :name="showConfirmePassword ? 'mdi-eye' : 'mdi-eye-off'"
+                @click="showConfirmePassword = !showConfirmePassword"
+              />
+            </template>
+          </q-input>
+
+          <div class="col-10 row col-xs-11 items-center q-py-sm">
+            <h6 class="no-margin text-secondary">Cargo:</h6>
+            <q-option-group v-model="cargo" :options="opcoes" color="primary" inline />
+          </div>
+
+          <q-btn
+            :label="enableBtnRegister ? 'Cadastrar Usuário' : 'Preencha todos os campos!'"
+            class="col-10 col-xs-11 q-py-md q-mb-md"
+            type="submit"
+            color="secondary"
+            no-caps
+            :disable="!enableBtnRegister"
+            :icon-right="
+              enableBtnRegister
+                ? 'mdi-checkbox-marked-circle-outline'
+                : 'mdi-block-helper'
+            "
+          />
+        </q-form>
+      </div>
+    </template>
+
+    <template v-else>
+      <div class="full-width justify-center flex row q-mt-md">
+        <q-card class="my-card full-width">
+          <q-card-section class="flex column justify-center">
+            <div class="text-h6 text-center text-bold text-primary">
+              Usuários Cadastrados
+            </div>
+            <!-- <div class="text-subtitle2 text-center">by John Doe</div> -->
           </q-card-section>
 
-          <q-separator dark />
-        </template>
+          <template v-for="user in users" :key="user.id">
+            <q-card-section class="flex text-secondary" style="gap: 10px">
+              <span><b>Nome:</b> {{ user.nome }}</span>
+              <span> <b>Email:</b> {{ user.email_usuario }}</span>
+              <span><b>Cargo: </b>{{ user.cargo }}</span>
+              <!-- <span><b>Data de cadastro: </b>{{ user.data_criacao }}</span> -->
+            </q-card-section>
 
-        <!-- <q-card-actions>
+            <q-separator dark />
+          </template>
+
+          <!-- <q-card-actions>
           <q-btn flat>Action 1</q-btn>
           <q-btn flat>Action 2</q-btn>
         </q-card-actions> -->
-      </q-card>
-    </div>
+        </q-card>
+      </div>
+    </template>
   </div>
 </template>
