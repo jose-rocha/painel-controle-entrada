@@ -121,7 +121,7 @@ const dataCadastroFormatada = (dataImg: object) => {
                     <span> </span>
                   </div>
                   <!-- Parentesco -->
-                  <div class="flex items-end" style="gap: 5px">
+                  <div class="flex items-end" style="gap: 15px">
                     <q-icon
                       :name="
                         dadosImagem.doc.parentesco_do_aluno === 'Responsavel'
@@ -129,7 +129,10 @@ const dataCadastroFormatada = (dataImg: object) => {
                           : 'mdi-account-tie'
                       "
                       size="md"
-                      style="margin-left: -0.5rem"
+                      :style="
+                        dadosImagem.doc.parentesco_do_aluno !== 'Responsavel' &&
+                        'margin-left: -0.4rem'
+                      "
                       color="secondary"
                     />
                     <span class="text-bold text-secondary">
@@ -185,7 +188,7 @@ const dataCadastroFormatada = (dataImg: object) => {
                     <q-icon
                       name="mdi-calendar-clock"
                       size="md"
-                      style="margin-left: -0.3rem"
+                      style="margin-left: -0.4rem"
                       color="secondary"
                     />
                     <span class="text-bold text-secondary"> Data e Hora da Visita: </span>
