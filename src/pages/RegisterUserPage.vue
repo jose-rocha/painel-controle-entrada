@@ -259,7 +259,7 @@ const enableBtnRegister = computed(
 
     <!-- Cards -->
     <template v-else>
-      <div class="justify-center flex row q-mt-md" style="width: 65rem">
+      <div class="flex justify-center  row q-mt-md" style="width: 65rem">
         <q-card class="my-card full-width">
           <q-card-section class="flex column justify-center">
             <div class="flex text-h6 justify-center items-end text-bold text-primary">
@@ -290,14 +290,18 @@ const enableBtnRegister = computed(
             <!-- <div class="text-subtitle2 text-center">by John Doe</div> -->
           </q-card-section>
 
-          <q-separator dark />
           <template
             v-for="user in users.sort((item1, item2) =>
               item1.nome.localeCompare(item2.nome),
             )"
             :key="user.id"
           >
-            <q-card-section class="flex" style="gap: 10px">
+            <q-separator  color="secondary" />
+
+            <q-card-section
+              :class="('flex')+ ' '
+              +($q.screen.gt.sm ? 'row' : 'column')" style="gap: 10px"
+            >
               <div style="flex: 1; gap: 5px" class="flex items-center justify-start">
                 <b class="text-secondary">
                   <q-icon name="mdi-account" size="md" />
@@ -305,7 +309,8 @@ const enableBtnRegister = computed(
                 </b>
                 <span style="position: relative; bottom: -7px">{{ user.nome }}</span>
               </div>
-              <div style="flex: 1; gap: 5px" class="flex items-center justify-start">
+
+              <div style="flex: 1.4; gap: 5px" class="flex items-center justify-start">
                 <b class="text-secondary">
                   <q-icon name="mdi-email" size="md" class="q-mx-xs" />
                   <span style="position: relative; bottom: -7px">Email:</span>
@@ -314,17 +319,17 @@ const enableBtnRegister = computed(
                   user.email_usuario
                 }}</span>
               </div>
-              <div style="flex: 1; gap: 5px" class="flex items-center justify-start">
+
+              <div style="flex: 0.6; gap: 5px"
+              class="flex items-center justify-start">
                 <b class="text-secondary">
                   <q-icon name="mdi-briefcase" size="md" class="q-mx-xs" />
                   <span style="position: relative; bottom: -5px">Cargo:</span>
                 </b>
                 <span style="position: relative; bottom: -5px">{{ user.cargo }}</span>
               </div>
-              <!-- <span><b>Data de cadastro: </b>{{ user.data_criacao }}</span> -->
             </q-card-section>
 
-            <q-separator dark />
           </template>
 
           <!-- <q-card-actions>
