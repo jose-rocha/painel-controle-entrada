@@ -142,9 +142,9 @@ const enableBtnRegister = computed(
         />
       </template>
     </div>
-    <!-- @reset="onReset"> -->
+    <!-- Form @reset="onReset"> -->
     <template v-if="showForm">
-      <div class="full-width justify-center flex row">
+      <div class="justify-center flex row">
         <q-form
           @submit="registerUser"
           class="q-gutter-xs row justify-center"
@@ -263,8 +263,9 @@ const enableBtnRegister = computed(
       </div>
     </template>
 
+    <!-- Cards -->
     <template v-else>
-      <div class="full-width justify-center flex row q-mt-md">
+      <div class="justify-center flex row q-mt-md" style="width: 65rem">
         <q-card class="my-card full-width">
           <q-card-section class="flex column justify-center">
             <div class="text-h6 text-center text-bold text-primary">
@@ -273,6 +274,7 @@ const enableBtnRegister = computed(
             <!-- <div class="text-subtitle2 text-center">by John Doe</div> -->
           </q-card-section>
 
+          <q-separator dark />
           <template v-for="user in users" :key="user.id">
             <q-card-section class="flex text-secondary" style="gap: 10px">
               <span><b>Nome:</b> {{ user.nome }}</span>
