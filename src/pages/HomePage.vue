@@ -3,24 +3,24 @@
 import { useQuasar } from 'quasar';
 import { useListImgagesStore } from 'src/stores/lista-imgs-store';
 import { getListImgStorage } from 'src/firebase/read/get_list_imgs';
+import { computed, ref } from 'vue';
 import { deleteImgFirestore } from '../firebase/delete/delete_img';
 
 const $q = useQuasar();
 const storeListImgs = useListImgagesStore();
-// const { humanStorageSize } = format;
 
-// const getListImgs = async () => {
-//   storeListImgs.dadosImagens = await getListImgStorage();
-// };
-// getListImgs();
+const dateJS = new Date();
+const dayJS = dateJS.getDate();
+const monthJS = dateJS.getMonth() + 1;
+const yearJS = dateJS.getFullYear();
 
-(async () => getListImgStorage())();
+const dateInitial = ref(`${String(dayJS).padStart(2, '0')}/${String(monthJS).padStart(2, '0')}/${yearJS}`);
+const dateEnd = ref(`${String(dayJS).padStart(2, '0')}/${String(monthJS).padStart(2, '0')}/${yearJS}`);
+// const date = computed(() => dateUtils.formatDate(dateRef.value, 'MM.DD.YY'));
 
-// (async () => {
-//   const dt = await teste();
+// console.log(dateInitial.value);
 
-//   console.log(dt);
-// })();
+(async () => getListImgStorage(dateInitial.value))();
 
 const deletImg = async (imagemIdDoc: string, pathImagem: string) => {
   // console.log(imagemIdDoc, pathImagem);
@@ -38,10 +38,13 @@ const deletImg = async (imagemIdDoc: string, pathImagem: string) => {
 };
 
 const dataCadastroFormatada = (dataImg: object) => {
+  const { nanoseconds, seconds } = dataImg.doc.data_criacao;
   const data = {
-    nanoseconds: dataImg.doc?.data_criacao?.nanoseconds,
-    seconds: dataImg.doc?.data_criacao?.seconds,
+    nanoseconds,
+    seconds,
   };
+
+  // console.log(data.nanoseconds);
 
   const date = new Date(data.seconds * 1000 + data.nanoseconds / 1000000);
   const dia = date.getDate().toString().padStart(2, '0');
@@ -53,6 +56,38 @@ const dataCadastroFormatada = (dataImg: object) => {
 
   return dataFormatada;
 };
+
+const myLocale = {
+  /* starting with Sunday */
+  days: 'Domingo_Segunda_Terça_Quarta_Quinta_Sexta_Sábado'.split('_'),
+  daysShort: 'Dom_Seg_Ter_Qua_Qui_Sex_Sáb'.split('_'),
+  months: 'Janeiro_Fevereiro_Março_Abril_Maio_Junho_Julio_Agosto_Setembr_Outubro_Novembro_Dezembro'.split('_'),
+  monthsShort: 'Jan_Fev_Mar_Abr_Mai_Jun_Jul_Ago_Set_Out_Nov_Dez'.split('_'),
+  firstDayOfWeek: 1, // 0-6, 0 - Sunday, 1 Monday, ...
+  format24h: true,
+  pluralDay: 'dias',
+};
+
+const filteredDateCardsImgs = computed(() => (
+  storeListImgs?.dadosImagens.filter((data) => {
+    const { nanoseconds, seconds } = data.doc.data_criacao;
+
+    const dataTime = {
+      nanoseconds,
+      seconds,
+    };
+
+    const date = new Date(dataTime.seconds * 1000 + dataTime.nanoseconds / 1000000);
+    const dia = date.getDate().toString().padStart(2, '0');
+    const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+    const ano = date.getFullYear();
+    const dataFormatada = `${dia}/${mes}/${ano}`;
+
+    return dateInitial.value === dateEnd.value
+      ? (dataFormatada >= dateInitial.value && dataFormatada <= dateEnd.value)
+      : (dataFormatada >= dateInitial.value || dataFormatada <= dateEnd.value);
+  })
+));
 </script>
 
 <template>
@@ -71,16 +106,58 @@ const dataCadastroFormatada = (dataImg: object) => {
 
         <template v-else>
           <q-card-section
-            class="flex justify-center text-center text-bold text-h5 full-width no-margin"
+            class="flex justify-center text-center text-bold text-h5 full-width column no-margin"
           >
             <span class="text-secondary q-mr-md" style="font-size: 2rem">
-              Visitantes Cadastrados!
+              <q-icon name="mdi-account-card" size="md" color="secondary" />
+              Quantidade de  Visitantes Cadastrados! <br>
+              <span class="text-white">{{ storeListImgs.dadosImagens.length }}</span>
             </span>
-            <q-icon name="mdi-account-card" size="md" color="secondary" />
             <div class="full-width">
-              <span>Quantidade de Visitantes: </span>
-              {{ storeListImgs.dadosImagens.length }}
             </div>
+
+             <!-- Calendários -->
+             <!-- {{ filteredDateCardsImgs }} -->
+             <div class="flex justify-center q-ma-md" style="gap: 2rem" >
+              <div>
+                <span>Data Inicial</span>
+                <q-input filled v-model="dateInitial" mask="##/##/####" >
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                        <q-date mask="DD/MM/YYYY" v-model="dateInitial" :locale="myLocale" >
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="OK" color="primary" flat />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+              <div>
+                <span>Data Final</span>
+                <q-input filled v-model="dateEnd" mask="##/##/####" >
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                        <q-date mask="DD/MM/YYYY" v-model="dateEnd" >
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Ok" color="primary" flat />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+            </div>
+            <!-- Calendários -->
+            <template v-if="dateInitial !== dateEnd">
+              <span>Quantidade de Visitantes nas Datas Selecionadas:
+                {{ filteredDateCardsImgs.length }}
+              </span>
+            </template>
           </q-card-section>
 
           <q-card-section
@@ -90,7 +167,7 @@ const dataCadastroFormatada = (dataImg: object) => {
             style="gap: 20px"
           >
             <template
-              v-for="dadosImagem in storeListImgs.dadosImagens"
+              v-for="dadosImagem in filteredDateCardsImgs"
               :key="dadosImagem"
             >
               <q-card class="flex column q-py-md q-px-sm">
@@ -260,7 +337,7 @@ const dataCadastroFormatada = (dataImg: object) => {
                       style="margin-left: -0.4rem"
                       color="secondary"
                     />
-                    <span class="text-bold text-secondary"> Data e Hora da Visita: </span>
+                    <span class="text-bold text-secondary"> Data e Hora da Visita:  </span>
                     {{ dataCadastroFormatada(dadosImagem) }}
                   </div>
                 </div>

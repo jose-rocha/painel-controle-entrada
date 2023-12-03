@@ -101,6 +101,7 @@ module.exports = configure((/* ctx */) => ({
         info: '#fefedf',
         warning: '#F2C037',
       },
+      lang: 'pt-BR',
     },
 
     // iconSet: 'material-icons', // Quasar icon set
