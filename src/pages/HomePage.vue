@@ -68,6 +68,17 @@ const myLocale = {
   pluralDay: 'dias',
 };
 
+const dateParse = (dateParams: string) => {
+  const partesData = String(dateParams).split('/');
+  const day = partesData[0];
+  const month = partesData[1];
+  const year = partesData[2];
+
+  const dataAmericana = `${month}/${day}/${year}`;
+
+  return dataAmericana;
+};
+
 const filteredDateCardsImgs = computed(() => (
   storeListImgs?.dadosImagens.filter((data) => {
     const { nanoseconds, seconds } = data.doc.data_criacao;
@@ -82,10 +93,17 @@ const filteredDateCardsImgs = computed(() => (
     const mes = (date.getMonth() + 1).toString().padStart(2, '0');
     const ano = date.getFullYear();
     const dataFormatada = `${dia}/${mes}/${ano}`;
+    const dataFormatadaAmericana = dateParse(dataFormatada);
+
+    const dateInitialAmericana = dateParse(dateInitial.value);
+    const dateEndAmericana = dateParse(dateEnd.value);
 
     return dateInitial.value === dateEnd.value
       ? (dataFormatada >= dateInitial.value && dataFormatada <= dateEnd.value)
-      : (dataFormatada >= dateInitial.value || dataFormatada <= dateEnd.value);
+      : (
+        dataFormatadaAmericana >= dateInitialAmericana
+        && dataFormatadaAmericana <= dateEndAmericana
+      );
   })
 ));
 </script>
