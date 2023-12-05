@@ -4,7 +4,7 @@ import { useQuasar } from 'quasar';
 import { useListImgagesStore } from 'src/stores/lista-imgs-store';
 import { getListImgStorage } from 'src/firebase/read/get_list_imgs';
 import {
-  computed, ref, watch, watchEffect,
+  computed, ref, watch,
 } from 'vue';
 import { deleteImgFirestore } from '../firebase/delete/delete_img';
 
@@ -149,7 +149,7 @@ const filteredDateCardsImgs = computed(() => (
             <span class="text-secondary q-mr-md" style="font-size: 2rem">
               <q-icon name="mdi-account-card" size="md" color="secondary" />
               Quantidade de  Visitantes Cadastrados! <br>
-              <span class="text-white">{{ storeListImgs.dadosImagens.length }}</span>
+              <span class="text-primary">{{ storeListImgs.dadosImagens.length }}</span>
             </span>
             <div class="full-width">
             </div>
@@ -266,7 +266,7 @@ const filteredDateCardsImgs = computed(() => (
                   </div>
                   <!-- Parentesco -->
                   <div class="flex items-end" style="gap: 15px">
-                    <q-card-section class="text-white no-padding">
+                    <q-card-section class="no-padding">
                       <div>
                         <q-icon
                           :name="
@@ -329,7 +329,7 @@ const filteredDateCardsImgs = computed(() => (
                   </div>
 
                   <!-- Nome do Visitante ou Responsável -->
-                  <q-card-section class="text-white no-padding">
+                  <q-card-section class="no-padding">
                     <div>
                       <q-icon
                         :name="
@@ -367,7 +367,7 @@ const filteredDateCardsImgs = computed(() => (
                   </q-card-section>
                   <!-- Nome do ALuno -->
                   <template v-if="dadosImagem.doc.parentesco_do_aluno === 'Responsavel'">
-                    <q-card-section class="text-white no-padding">
+                    <q-card-section class="no-padding">
                       <div>
                         <q-icon
                           name="mdi-account"

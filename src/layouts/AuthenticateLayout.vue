@@ -89,7 +89,6 @@ const logout = async () => {
   store.avatarUrl = '';
   store.pathStorageImage = '';
 
-  store.series = [];
   storeListImgs.dadosImagens = [];
 
   storeListImgs.unsubscribe(); // Pra para remover o listener do OnSnapShot
