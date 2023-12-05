@@ -8,6 +8,8 @@ import { useListImgagesStore } from '../../stores/lista-imgs-store';
 const storeListImgs = useListImgagesStore();
 
 const getListImgStorage = async () => {
+  console.log('Iniciou getListImgStorage');
+
   const docsRef = collection(db, 'lista_de_visitantes');
   const docOrderBy = query(docsRef, orderBy('data_criacao', 'desc'));
 

@@ -3,7 +3,9 @@
 import { useQuasar } from 'quasar';
 import { useListImgagesStore } from 'src/stores/lista-imgs-store';
 import { getListImgStorage } from 'src/firebase/read/get_list_imgs';
-import { computed, ref } from 'vue';
+import {
+  computed, ref, watch, watchEffect,
+} from 'vue';
 import { deleteImgFirestore } from '../firebase/delete/delete_img';
 
 const $q = useQuasar();
@@ -79,6 +81,17 @@ const dateParse = (dateParams: string) => {
   return dataAmericana;
 };
 
+const showQtdFiltro = ref<boolean>(false);
+
+watch([dateInitial, dateEnd], (newDateInitial, newDateEnd) => {
+  if (newDateInitial || newDateEnd) {
+    showQtdFiltro.value = true;
+  }
+});
+
+const events = ref([]);
+const options = ref([]);
+
 const filteredDateCardsImgs = computed(() => (
   storeListImgs?.dadosImagens.filter((data) => {
     const { nanoseconds, seconds } = data.doc.data_criacao;
@@ -95,6 +108,9 @@ const filteredDateCardsImgs = computed(() => (
     const dataFormatada = `${dia}/${mes}/${ano}`;
     const dataFormatadaAmericana = dateParse(dataFormatada);
 
+    events.value.push(`${ano}/${mes}/${dia}`);
+    options.value.push(`${ano}/${mes}/${dia}`);
+
     const dateInitialAmericana = dateParse(dateInitial.value);
     const dateEndAmericana = dateParse(dateEnd.value);
 
@@ -106,6 +122,10 @@ const filteredDateCardsImgs = computed(() => (
       );
   })
 ));
+
+// const setDateInitial = () => {
+//   if (dateInitial.value) showQtdFiltro.value = true;
+// };
 </script>
 
 <template>
@@ -139,27 +159,56 @@ const filteredDateCardsImgs = computed(() => (
              <div class="flex justify-center q-ma-md" style="gap: 2rem" >
               <div>
                 <span>Data Inicial</span>
-                <q-input filled v-model="dateInitial" mask="##/##/####" >
+                <q-input filled v-model="dateInitial" mask="##/##/####" readonly>
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                        <q-date mask="DD/MM/YYYY" v-model="dateInitial" :locale="myLocale" >
+                        <q-date
+                          mask="DD/MM/YYYY" v-model="dateInitial"
+                          :locale="myLocale" :events="events"
+                          :options="options" event-color="primary"
+                        >
                           <div class="row items-center justify-end">
-                            <q-btn v-close-popup label="OK" color="primary" flat />
+                            <q-btn
+                              v-close-popup
+                              label="OK" color="primary"
+                              flat
+                            />
                           </div>
                         </q-date>
                       </q-popup-proxy>
                     </q-icon>
                   </template>
                 </q-input>
+
+                <!-- <q-btn icon="event" round color="primary">
+                  <q-popup-proxy
+                    cover transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-date
+                      mask="DD/MM/YYYY" v-model="dateInitial"
+                      :locale="myLocale" :events="events" event-color="primary"
+                    >
+                      <div class="row items-center justify-end q-gutter-sm">
+                        <q-btn label="Cancel" color="primary" flat v-close-popup />
+                        <q-btn label="OK" color="primary" flat v-close-popup />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-btn> -->
               </div>
               <div>
                 <span>Data Final</span>
-                <q-input filled v-model="dateEnd" mask="##/##/####" >
+                <q-input filled v-model="dateEnd" mask="##/##/####" readonly>
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                        <q-date mask="DD/MM/YYYY" v-model="dateEnd" >
+                        <q-date
+                          mask="DD/MM/YYYY" v-model="dateEnd"
+                          :locale="myLocale" :events="events"
+                          :options="options" event-color="primary"
+                        >
                           <div class="row items-center justify-end">
                             <q-btn v-close-popup label="Ok" color="primary" flat />
                           </div>
@@ -171,7 +220,7 @@ const filteredDateCardsImgs = computed(() => (
               </div>
             </div>
             <!-- Calendários -->
-            <template v-if="dateInitial !== dateEnd">
+            <template v-if="showQtdFiltro">
               <span>Quantidade de Visitantes nas Datas Selecionadas:
                 {{ filteredDateCardsImgs.length }}
               </span>
